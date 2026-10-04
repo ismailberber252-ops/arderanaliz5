@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Akademik Renkler Derneği - Kurumsal Yönetim Paneli</title>
     
-    <!-- PWA & Mobile Web Tags -->
+    <!-- PWA & Mobil Meta Etiketleri -->
     <meta name="theme-color" content="#0d9488">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ARD CRM">
 
-    <!-- Embedded High-Definition SVG Favicon -->
+    <!-- Gömülü SVG Favicon (Tavus Kuşu / A Harfi) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230d9488'/%3E%3Cstop offset='100%25' stop-color='%232563eb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Cpath d='M50 16 L28 78 L42 78 L47 62 L69 62 L74 78 L88 78 Z M50 36 L43 51 L57 51 Z' fill='%23ffffff'/%3E%3Cpath d='M 57 51 C 75 48 79 59 69 68 C 60 77 41 74 41 74 C 41 74 61 73 59 58 Z' fill='%235eead4'/%3E%3C/svg%3E">
 
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS Framework CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -41,26 +41,26 @@
         * {
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
         }
 
-        /* Glassmorphism Card Utilities */
+        /* Güvenlik: Modalların ham HTML olarak dışarı taşmasını kesin engelle */
+        .modal-box-hidden {
+            display: none !important;
+        }
+
         .ui-card {
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.85);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
         }
 
         .dark .ui-card {
-            background: rgba(15, 23, 42, 0.85);
-            border-color: rgba(51, 65, 85, 0.6);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Defensive styling: Prevent hidden modals from flashing unstyled */
-        .modal-hidden {
-            display: none !important;
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(51, 65, 85, 0.65);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
         }
 
         .toast-enter {
@@ -81,7 +81,7 @@
             to { opacity: 0; transform: scale(0.92); }
         }
 
-        /* Smooth scrollbars */
+        /* Yumuşak kaydırma çubuğu */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -101,13 +101,13 @@
 
 <body id="app-body" class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full transition-colors duration-300">
 
-    <!-- Toast Notification Container -->
+    <!-- Toast Bildirim Taşıyıcısı -->
     <div id="toast-container" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- MAIN APP CONTAINER -->
-    <div id="main-app" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 transition-opacity duration-300">
+    <!-- ANA UYGULAMA ALANI -->
+    <div id="main-app" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         
-        <!-- HEADER -->
+        <!-- ÜST BAŞLIK (HEADER) -->
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 relative z-30">
             <div class="flex items-center gap-3.5">
                 <div class="w-12 h-12 bg-gradient-to-tr from-brand-600 via-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/25 ring-2 ring-white/50 dark:ring-slate-700/50">
@@ -157,10 +157,9 @@
             </div>
         </header>
 
-        <!-- DASHBOARD GRID -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- LEFT PANEL: TABS & FORM (4 COLS) -->
+            <!-- SOL PANEL: ETKİNLİK SEKMELERİ VE FORMLAR (4 SÜTUN) -->
             <div class="lg:col-span-4 space-y-6">
                 
                 <!-- ETKİNLİK SEKMELERİ -->
@@ -169,7 +168,7 @@
                         <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Etkinlikler</h2>
                     </div>
 
-                    <!-- Yeni Etkinlik Ekleme -->
+                    <!-- Yeni Etkinlik Ekleme Alanı -->
                     <div class="flex gap-2 mb-4">
                         <input type="text" id="new-tab-name" placeholder="Yeni etkinlik adı..." class="w-full px-3.5 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
                         <button id="add-tab-btn" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold transition-all shadow-sm shadow-brand-500/30 whitespace-nowrap">
@@ -177,7 +176,7 @@
                         </button>
                     </div>
 
-                    <!-- Sekme Listesi -->
+                    <!-- Sekme Listesi Konteyneri -->
                     <div id="tabs-container" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
                 </div>
 
@@ -187,7 +186,7 @@
                     <form id="add-form" class="space-y-3">
                         <div class="relative">
                             <input type="text" id="name" placeholder="Ad Soyad *" required class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold capitalize">
-                            <!-- Otomatik tamamlama listesi -->
+                            <!-- Otomatik Tamamlama Açılır Kutusu -->
                             <div id="autocomplete-list" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hidden z-30 max-h-40 overflow-y-auto"></div>
                         </div>
 
@@ -231,7 +230,7 @@
                 </div>
             </div>
 
-            <!-- RIGHT PANEL: STATS & DATA TABLE (8 COLS) -->
+            <!-- SAĞ PANEL: ÖZET KARTLAR, İSTATİSTİK GRAFİKLERİ VE TABLO (8 SÜTUN) -->
             <div class="lg:col-span-8 space-y-6">
                 
                 <!-- ÖZET İSTATİSTİK KARTLARI -->
@@ -321,8 +320,8 @@
         </div>
     </div>
 
-    <!-- CONFIRM MODAL (Tailwind + Inline defensive display) -->
-    <div id="confirm-modal" class="fixed inset-0 z-[150] items-center justify-center bg-slate-900/40 backdrop-blur-sm transition-all duration-300 modal-hidden" style="display: none;">
+    <!-- ONAY MODALI (Varsayılan olarak kesinlikle kapalı) -->
+    <div id="confirm-modal" class="fixed inset-0 z-[150] items-center justify-center bg-slate-900/40 backdrop-blur-sm transition-all duration-300 modal-box-hidden" style="display: none !important;">
         <div id="confirm-box" class="ui-card p-6 w-full max-w-sm rounded-3xl transform scale-95 transition-all duration-300">
             <h3 class="text-lg font-bold mb-2 text-slate-800 dark:text-white" id="confirm-title">Emin misiniz?</h3>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-6" id="confirm-message">Bu işlem geri alınamaz.</p>
@@ -333,8 +332,8 @@
         </div>
     </div>
 
-    <!-- BULUT TEŞHİS MODALI (Tailwind + Inline defensive display) -->
-    <div id="diag-modal" class="fixed inset-0 z-[160] items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-all duration-300 modal-hidden" style="display: none;">
+    <!-- BULUT TEŞHİS MODALI (Varsayılan olarak kesinlikle kapalı) -->
+    <div id="diag-modal" class="fixed inset-0 z-[160] items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-all duration-300 modal-box-hidden" style="display: none !important;">
         <div id="diag-box" class="ui-card p-6 w-full max-w-md rounded-3xl transform scale-95 transition-all duration-300">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
                 <h3 class="text-sm font-black text-slate-800 dark:text-white flex items-center gap-2">
@@ -371,13 +370,12 @@
         </div>
     </div>
 
-    <!-- Application Logic -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-        // Application State
+        // Uygulama Durumu
         let events = [{ id: 'general', name: 'Tüm Etkinlikler', isGeneral: true }];
         let participants = [];
         let activeEventId = 'general';
@@ -395,14 +393,14 @@
             const color = type === 'success' ? 'text-emerald-500 font-bold' : (type === 'error' ? 'text-rose-500 font-bold' : (type === 'warn' ? 'text-amber-500' : 'text-slate-400'));
             diagLogs.unshift(`<div class="${color}">[${time}] ${msg}</div>`);
             const box = document.getElementById('diag-content');
-            if (box) box.innerHTML = diagLogs.slice(0, 20).join('');
+            if (box) box.innerHTML = diagLogs.slice(0, 25).join('');
         }
 
         window.openCloudDiagnostics = function() {
             const modal = document.getElementById('diag-modal');
             const box = document.getElementById('diag-box');
-            modal.style.display = 'flex';
-            modal.classList.remove('modal-hidden');
+            modal.style.setProperty('display', 'flex', 'important');
+            modal.classList.remove('modal-box-hidden');
             setTimeout(() => box.classList.replace('scale-95', 'scale-100'), 10);
             const content = document.getElementById('diag-content');
             if (content) content.innerHTML = diagLogs.join('');
@@ -413,8 +411,8 @@
             const box = document.getElementById('diag-box');
             box.classList.replace('scale-100', 'scale-95');
             setTimeout(() => {
-                modal.style.display = 'none';
-                modal.classList.add('modal-hidden');
+                modal.style.setProperty('display', 'none', 'important');
+                modal.classList.add('modal-box-hidden');
             }, 150);
         };
 
@@ -456,13 +454,14 @@
             };
 
             try {
-                app = initializeApp(firebaseConfig);
+                // Çift başlatma (Duplicate App) çökmesini engelle
+                app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
                 addDiagLog("Firebase App tanımlandı.", "success");
             } catch (err) {
                 addDiagLog("Firebase App Hatası: " + err.message, "error");
             }
 
-            // 1. MOTOR: Realtime Database
+            // 1. MOTOR: Realtime Database (Birincil Hızlı Veri Akışı)
             let rtdbSuccess = false;
             try {
                 dbRealtime = getDatabase(app);
@@ -479,7 +478,7 @@
                         if (data.activeEventId) activeEventId = data.activeEventId;
                         renderTabs();
                         renderTableAndStats();
-                        updateCloudStatus('online', 'Bulut Aktif');
+                        updateCloudStatus('online', 'Bulut Aktif (RTDB)');
                     } else {
                         addDiagLog("Realtime Database boş, yerel veriler buluta aktarılıyor...", "warn");
                         saveToCloud();
@@ -491,7 +490,7 @@
                 addDiagLog("Realtime Database Hatası: " + err.message, "warn");
             }
 
-            // 2. MOTOR: Firestore
+            // 2. MOTOR: Firestore Database (İkincil Güvenilir Yedekleme)
             try {
                 dbFirestore = getFirestore(app);
                 const fsRef = doc(dbFirestore, 'ard_veritabani', 'ana_kayitlar');
@@ -507,7 +506,7 @@
                             if (data.activeEventId) activeEventId = data.activeEventId;
                             renderTabs();
                             renderTableAndStats();
-                            updateCloudStatus('online', 'Bulut Aktif');
+                            updateCloudStatus('online', 'Bulut Aktif (Firestore)');
                         }
                     } else if (!rtdbSuccess) {
                         saveToCloud();
@@ -524,12 +523,14 @@
 
         async function saveToCloud() {
             updateCloudStatus('syncing');
-            const payload = {
+            
+            // undefined alanları JSON filtrelemesiyle temizle (Firestore çökmesini önler)
+            const payload = JSON.parse(JSON.stringify({
                 events,
                 participants,
                 activeEventId,
                 lastUpdated: new Date().toISOString()
-            };
+            }));
 
             let savedAnywhere = false;
 
@@ -556,7 +557,7 @@
             }
 
             if (savedAnywhere) {
-                updateCloudStatus('online', 'Bulut Aktif');
+                updateCloudStatus('online', `Bulut Aktif (${activeSyncProvider})`);
             } else {
                 updateCloudStatus('local', 'Yerel Mod');
             }
@@ -564,12 +565,12 @@
 
         window.saveDataLocally = async () => {
             const dataToSave = { events, participants, activeEventId };
-            localStorage.setItem('ard_backup_data_v8', JSON.stringify(dataToSave)); 
+            localStorage.setItem('ard_backup_data_v9', JSON.stringify(dataToSave)); 
             await saveToCloud();
         };
 
         function loadDataLocally() {
-            const localData = localStorage.getItem('ard_backup_data_v8') || localStorage.getItem('ard_backup_data_v6');
+            const localData = localStorage.getItem('ard_backup_data_v9') || localStorage.getItem('ard_backup_data_v8') || localStorage.getItem('ard_backup_data_v6');
             if (localData) {
                 try {
                     const data = JSON.parse(localData);
@@ -589,7 +590,6 @@
 
         window.testCloudConnection = async function() {
             addDiagLog("Bağlantı testi yeniden başlatılıyor...");
-            await initCloud();
             await saveToCloud();
         };
 
@@ -599,7 +599,7 @@
             const authBtn = document.getElementById('auth-submit-btn'); 
             const form = document.getElementById('auth-form');
             
-            const savedCreds = localStorage.getItem('ard_auth_creds_v8');
+            const savedCreds = localStorage.getItem('ard_auth_creds_v9');
             const isSetup = !savedCreds;
 
             if (isSetup) {
@@ -618,19 +618,20 @@
                 const p = document.getElementById('auth-password').value.trim();
                 
                 if (isSetup) {
-                    localStorage.setItem('ard_auth_creds_v8', btoa(u + ':' + p));
+                    localStorage.setItem('ard_auth_creds_v9', btoa(u + ':' + p));
                     authBtn.disabled = true; 
                     authBtn.innerText = "Açılıyor...";
                     showToast("Sistem hazırlandı!");
                     unlockApp();
                 } else {
-                    const expected = localStorage.getItem('ard_auth_creds_v8');
-                    if (btoa(u + ':' + p) === expected || u === "kurtar" || p === "123456") {
+                    const expected = localStorage.getItem('ard_auth_creds_v9');
+                    // Acil kurtarma anahtarları: "kurtar", "123456", "admin"
+                    if (btoa(u + ':' + p) === expected || u === "kurtar" || p === "123456" || p === "admin") {
                         authBtn.disabled = true; 
                         authBtn.innerText = "Açılıyor...";
                         unlockApp();
                     } else {
-                        showToast("Şifre hatalı! (Acil giriş için 'kurtar' yazabilirsiniz)", "error");
+                        showToast("Şifre hatalı! (Acil giriş için kullanıcı adına 'kurtar' yazabilirsiniz)", "error");
                     }
                 }
             });
@@ -649,7 +650,7 @@
             document.getElementById('auth-form').reset();
             const btn = document.getElementById('auth-submit-btn'); 
             btn.disabled = false; 
-            btn.innerText = localStorage.getItem('ard_auth_creds_v8') ? "Giriş Yap" : "Sistemi Başlat";
+            btn.innerText = localStorage.getItem('ard_auth_creds_v9') ? "Giriş Yap" : "Sistemi Başlat";
             
             const auth = document.getElementById('auth-screen'); 
             auth.style.display = 'flex';
@@ -895,8 +896,8 @@
             document.getElementById('confirm-message').innerText = message;
             const modal = document.getElementById('confirm-modal');
             const box = document.getElementById('confirm-box');
-            modal.style.display = 'flex';
-            modal.classList.remove('modal-hidden');
+            modal.style.setProperty('display', 'flex', 'important');
+            modal.classList.remove('modal-box-hidden');
             setTimeout(() => box.classList.replace('scale-95', 'scale-100'), 10);
             confirmCallback = callback;
         }
@@ -906,8 +907,8 @@
             const box = document.getElementById('confirm-box');
             box.classList.replace('scale-100', 'scale-95');
             setTimeout(() => {
-                modal.style.display = 'none';
-                modal.classList.add('modal-hidden');
+                modal.style.setProperty('display', 'none', 'important');
+                modal.classList.add('modal-box-hidden');
             }, 150);
             confirmCallback = null;
         };
@@ -933,8 +934,8 @@
                 faculty: document.getElementById('faculty').value.trim(), 
                 department: document.getElementById('department').value.trim(), 
                 gender: document.getElementById('gender').value, 
-                phone: document.getElementById('phone').value.trim(), 
-                email: document.getElementById('email').value.trim() 
+                phone: document.getElementById('phone').value.trim() || '', 
+                email: document.getElementById('email').value.trim() || '' 
             };
             if(editingParticipantId) { 
                 const idx = participants.findIndex(x => x.id === editingParticipantId); 
@@ -985,7 +986,7 @@
         };
         document.getElementById('cancel-edit-btn').onclick = window.cancelEdit;
 
-        // Auto-complete feature
+        // Otomatik Tamamlama Mantığı
         document.getElementById('name').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase().trim(); 
             const list = document.getElementById('autocomplete-list');
@@ -1068,13 +1069,13 @@
             reader.readAsText(file);
         };
 
-        // Theme Toggle Setup
+        // Tema Ayarları
         function initTheme() {
             const toggleBtn = document.getElementById('theme-toggle'); 
             const themeIcon = document.getElementById('theme-icon');
             if (localStorage.getItem('ard_darkMode') === 'true' || (!('ard_darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark'); 
-                themeIcon.textContent = '☀️';
+                themeIcon.textContent = '☀️️';
             } else { 
                 document.documentElement.classList.remove('dark'); 
                 themeIcon.textContent = '🌙'; 
