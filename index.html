@@ -360,7 +360,7 @@
             <h2 id="auth-title" class="text-xl font-black text-slate-800 dark:text-white mb-1">Kurumsal Yönetici Girişi</h2>
             <p id="auth-subtitle" class="text-xs text-slate-500 dark:text-slate-400 mb-6">Uçtan uca şifreli bulut paneline erişin.</p>
             
-            <form id="auth-form" class="space-y-3.5">
+            <form id="auth-form" onsubmit="return false;" class="space-y-3.5">
                 <input type="email" id="auth-email" placeholder="Yönetici E-Posta" required class="w-full px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold">
                 <input type="password" id="auth-password" placeholder="Yönetici Şifresi" required class="w-full px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold">
                 <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-brand-500/30 flex items-center justify-center gap-2">
@@ -377,6 +377,21 @@
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
         import { getAuth, signInWithEmailAndPassword, signOut as fbSignOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
+        // Firebase Yapılandırması ve Erken Başlatma (Erken çökme engellendi)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDNxbTOFwit25u20nZ1Fez2vjNEXna4K4E",
+            authDomain: "arderanaliz.firebaseapp.com",
+            databaseURL: "https://arderanaliz-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "arderanaliz",
+            storageBucket: "arderanaliz.firebasestorage.app",
+            messagingSenderId: "343442116812",
+            appId: "1:343442116812:web:1e3e0c2643bd937bc87269",
+            measurementId: "G-7WKCLX1ZMK"
+        };
+
+        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+        const auth = getAuth(app);
+
         // Uygulama Durumu
         let events = [{ id: 'general', name: 'Tüm Etkinlikler', isGeneral: true }];
         let participants = [];
@@ -385,7 +400,7 @@
         let searchTerm = '';
         let currentFilteredData = []; 
 
-        let app, dbFirestore, dbRealtime, auth;
+        let dbFirestore, dbRealtime;
         let isCloudConnected = false;
         let activeSyncProvider = 'Realtime Database';
         let diagLogs = [];
@@ -443,26 +458,6 @@
         async function initCloud() {
             addDiagLog("Firebase başlatılıyor...");
             updateCloudStatus('syncing');
-
-            const firebaseConfig = {
-                apiKey: "AIzaSyDNxbTOFwit25u20nZ1Fez2vjNEXna4K4E",
-                authDomain: "arderanaliz.firebaseapp.com",
-                databaseURL: "https://arderanaliz-default-rtdb.europe-west1.firebasedatabase.app",
-                projectId: "arderanaliz",
-                storageBucket: "arderanaliz.firebasestorage.app",
-                messagingSenderId: "343442116812",
-                appId: "1:343442116812:web:1e3e0c2643bd937bc87269",
-                measurementId: "G-7WKCLX1ZMK"
-            };
-
-            try {
-                // Çift başlatma (Duplicate App) çökmesini engelle
-                app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-                auth = getAuth(app);
-                addDiagLog("Firebase App ve Auth motoru tanımlandı.", "success");
-            } catch (err) {
-                addDiagLog("Firebase App Hatası: " + err.message, "error");
-            }
 
             // 1. MOTOR: Realtime Database (Birincil Hızlı Veri Akışı)
             let rtdbSuccess = false;
@@ -601,8 +596,6 @@
             const authBtn = document.getElementById('auth-submit-btn');
             const authError = document.getElementById('auth-error');
 
-            if (!auth) auth = getAuth(app);
-
             // Gerçek zamanlı oturum takipçisi (Google Firebase Auth)
             onAuthStateChanged(auth, (user) => {
                 if (user) {
@@ -615,6 +608,7 @@
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 authError.classList.add('hidden');
                 authBtn.disabled = true;
                 authBtn.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span> Doğrulanıyor...';
@@ -634,6 +628,8 @@
                         authError.textContent = "Hatalı e-posta veya şifre girdiniz.";
                     } else if (error.code === 'auth/too-many-requests') {
                         authError.textContent = "Çok fazla başarısız deneme yapıldı. Lütfen biraz bekleyin.";
+                    } else if (error.code === 'auth/invalid-email') {
+                        authError.textContent = "Geçersiz e-posta formatı girdiniz.";
                     } else {
                         authError.textContent = "Giriş başarısız: " + error.message;
                     }
