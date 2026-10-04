@@ -357,15 +357,16 @@
             <div class="w-16 h-16 bg-gradient-to-tr from-brand-600 via-teal-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-brand-500/30">
                 <span class="text-white font-black text-3xl">A</span>
             </div>
-            <h2 id="auth-title" class="text-xl font-black text-slate-800 dark:text-white mb-1">Yönetici Girişi</h2>
-            <p id="auth-subtitle" class="text-xs text-slate-500 dark:text-slate-400 mb-6">Yönetim paneline erişmek için şifrenizi girin.</p>
+            <h2 id="auth-title" class="text-xl font-black text-slate-800 dark:text-white mb-1">Kurumsal Yönetici Girişi</h2>
+            <p id="auth-subtitle" class="text-xs text-slate-500 dark:text-slate-400 mb-6">Uçtan uca şifreli bulut paneline erişin.</p>
             
             <form id="auth-form" class="space-y-3.5">
-                <input type="text" id="auth-username" placeholder="Kullanıcı Adı" required class="w-full px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold">
-                <input type="password" id="auth-password" placeholder="Şifre" required class="w-full px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold">
-                <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-brand-500/30">
-                    Giriş Yap
+                <input type="email" id="auth-email" placeholder="Yönetici E-Posta" required class="w-full px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold">
+                <input type="password" id="auth-password" placeholder="Yönetici Şifresi" required class="w-full px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold">
+                <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-brand-500/30 flex items-center justify-center gap-2">
+                    <span>Güvenli Giriş Yap</span>
                 </button>
+                <div id="auth-error" class="hidden text-[11px] font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/40 p-2.5 rounded-xl border border-rose-200 dark:border-rose-900"></div>
             </form>
         </div>
     </div>
@@ -374,6 +375,7 @@
         import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword, signOut as fbSignOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         // Uygulama Durumu
         let events = [{ id: 'general', name: 'Tüm Etkinlikler', isGeneral: true }];
@@ -383,7 +385,7 @@
         let searchTerm = '';
         let currentFilteredData = []; 
 
-        let app, dbFirestore, dbRealtime;
+        let app, dbFirestore, dbRealtime, auth;
         let isCloudConnected = false;
         let activeSyncProvider = 'Realtime Database';
         let diagLogs = [];
@@ -456,7 +458,8 @@
             try {
                 // Çift başlatma (Duplicate App) çökmesini engelle
                 app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-                addDiagLog("Firebase App tanımlandı.", "success");
+                auth = getAuth(app);
+                addDiagLog("Firebase App ve Auth motoru tanımlandı.", "success");
             } catch (err) {
                 addDiagLog("Firebase App Hatası: " + err.message, "error");
             }
@@ -593,68 +596,80 @@
             await saveToCloud();
         };
 
-        async function setupAuth() {
-            const authTitle = document.getElementById('auth-title'); 
-            const authSubtitle = document.getElementById('auth-subtitle');
-            const authBtn = document.getElementById('auth-submit-btn'); 
+        function setupAuth() {
             const form = document.getElementById('auth-form');
-            
-            const savedCreds = localStorage.getItem('ard_auth_creds_v9');
-            const isSetup = !savedCreds;
+            const authBtn = document.getElementById('auth-submit-btn');
+            const authError = document.getElementById('auth-error');
 
-            if (isSetup) {
-                authTitle.innerText = "Yönetici Girişi"; 
-                authSubtitle.innerText = "Yönetim paneline erişmek için şifrenizi belirleyin."; 
-                authBtn.innerText = "Sistemi Başlat";
-            } else {
-                authTitle.innerText = "Hoş Geldiniz"; 
-                authSubtitle.innerText = "Lütfen yönetici şifrenizi girin."; 
-                authBtn.innerText = "Giriş Yap";
-            }
+            if (!auth) auth = getAuth(app);
+
+            // Gerçek zamanlı oturum takipçisi (Google Firebase Auth)
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    addDiagLog(`Yetkili oturum doğrulandı: ${user.email}`, "success");
+                    unlockApp();
+                } else {
+                    lockApp();
+                }
+            });
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const u = document.getElementById('auth-username').value.trim(); 
-                const p = document.getElementById('auth-password').value.trim();
-                
-                if (isSetup) {
-                    localStorage.setItem('ard_auth_creds_v9', btoa(u + ':' + p));
-                    authBtn.disabled = true; 
-                    authBtn.innerText = "Açılıyor...";
-                    showToast("Sistem hazırlandı!");
-                    unlockApp();
-                } else {
-                    const expected = localStorage.getItem('ard_auth_creds_v9');
-                    // Acil kurtarma anahtarları: "kurtar", "123456", "admin"
-                    if (btoa(u + ':' + p) === expected || u === "kurtar" || p === "123456" || p === "admin") {
-                        authBtn.disabled = true; 
-                        authBtn.innerText = "Açılıyor...";
-                        unlockApp();
+                authError.classList.add('hidden');
+                authBtn.disabled = true;
+                authBtn.innerHTML = '<span class="inline-block animate-spin mr-2">⏳</span> Doğrulanıyor...';
+
+                const email = document.getElementById('auth-email').value.trim();
+                const password = document.getElementById('auth-password').value.trim();
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showToast("Giriş başarılı. Bulut verileri yükleniyor...");
+                } catch (error) {
+                    authBtn.disabled = false;
+                    authBtn.innerHTML = '<span>Güvenli Giriş Yap</span>';
+                    authError.classList.remove('hidden');
+
+                    if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                        authError.textContent = "Hatalı e-posta veya şifre girdiniz.";
+                    } else if (error.code === 'auth/too-many-requests') {
+                        authError.textContent = "Çok fazla başarısız deneme yapıldı. Lütfen biraz bekleyin.";
                     } else {
-                        showToast("Şifre hatalı! (Acil giriş için kullanıcı adına 'kurtar' yazabilirsiniz)", "error");
+                        authError.textContent = "Giriş başarısız: " + error.message;
                     }
+                    showToast(authError.textContent, "error");
                 }
             });
         }
 
         function unlockApp() {
-            const auth = document.getElementById('auth-screen');
-            auth.classList.add('opacity-0');
+            const authScreen = document.getElementById('auth-screen');
+            authScreen.classList.add('opacity-0');
             setTimeout(() => { 
-                auth.style.display = 'none';
+                authScreen.style.setProperty('display', 'none', 'important');
                 initApp(); 
             }, 300);
         }
 
-        window.logout = function() {
-            document.getElementById('auth-form').reset();
-            const btn = document.getElementById('auth-submit-btn'); 
-            btn.disabled = false; 
-            btn.innerText = localStorage.getItem('ard_auth_creds_v9') ? "Giriş Yap" : "Sistemi Başlat";
-            
-            const auth = document.getElementById('auth-screen'); 
-            auth.style.display = 'flex';
-            setTimeout(() => auth.classList.remove('opacity-0'), 10);
+        function lockApp() {
+            const authScreen = document.getElementById('auth-screen');
+            authScreen.style.setProperty('display', 'flex', 'important');
+            setTimeout(() => authScreen.classList.remove('opacity-0'), 10);
+            const authBtn = document.getElementById('auth-submit-btn');
+            if (authBtn) {
+                authBtn.disabled = false;
+                authBtn.innerHTML = '<span>Güvenli Giriş Yap</span>';
+            }
+        }
+
+        window.logout = async function() {
+            try {
+                if (auth) await fbSignOut(auth);
+                document.getElementById('auth-form').reset();
+                showToast("Oturum kapatıldı.");
+            } catch (err) {
+                showToast("Çıkış yapılırken hata: " + err.message, "error");
+            }
         };
 
         async function initApp() {
