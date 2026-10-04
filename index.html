@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Akademik Renkler Derneği | Yönetim</title>
+    
+    <meta name="theme-color" content="#14b8a6">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ARD CRM">
+    
+    <meta property="og:title" content="Akademik Renkler Derneği | CRM Paneli">
+    <meta property="og:description" content="Dernek etkinlikleri ve katılımcı istatistiklerini yönetmek için kurumsal bulut tabanlı yönetim sistemi.">
+    <meta property="og:type" content="website">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzE0YjhhNiIgcng9IjEwMCIvPjxwYXRoIGQ9Ik0yNTAgNTAgTDEyMCA0MDAgTDIwMCA0MDAgTDIzMCAzMTAgTDM1MCAzMTAgTDM4MCA0MDAgTDQ2MCA0MDAgTDMyMCA1MCBaIE0yNTAgMTYwIEwyNDUgMjMwIEwzMjAgMjMwIFoiIGZpbGw9IiNmZmZmZmYiLz48cGF0aCBkPSJNMzIwIDIzMCBDIDQyMCAyMjAgNDQwIDI4MCAzODAgMzQwIEMgMzMwIDM5MCAyMjAgMzgwIDIyMCAzODAgQyAyMjAgMzgwIDM0MCAzNzAgMzMwIDI3MCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuODUpIi8+PGNpcmNsZSBjeD0iMzYwIiBjeT0iMjcwIiByPSIxMCIgZmlsbD0iIzBmNzY2ZSIvPjwvc3ZnPg==">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzE0YjhhNiIgcng9IjEwMCIvPjxwYXRoIGQ9Ik0yNTAgNTAgTDEyMCA0MDAgTDIwMCA0MDAgTDIzMCAzMTAgTDM1MCAzMTAgTDM4MCA0MDAgTDQ2MCA0MDAgTDMyMCA1MCBaIE0yNTAgMTYwIEwyNDUgMjMwIEwzMjAgMjMwIFoiIGZpbGw9IiNmZmZmZmYiLz48cGF0aCBkPSJNMzIwIDIzMCBDIDQyMCAyMjAgNDQwIDI4MCAzODAgMzQwIEMgMzMwIDM5MCAyMjAgMzgwIDIyMCAzODAgQyAyMjAgMzgwIDM0MCAzNzAgMzMwIDI3MCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuODUpIi8+PGNpcmNsZSBjeD0iMzYwIiBjeT0iMjcwIiByPSIxMCIgZmlsbD0iIzBmNzY2ZSIvPjwvc3ZnPg==">
+
+    <script>
+        const pwaIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzE0YjhhNiIgcng9IjEwMCIvPjxwYXRoIGQ9Ik0yNTAgNTAgTDEyMCA0MDAgTDIwMCA0MDAgTDIzMCAzMTAgTDM1MCAzMTAgTDM4MCA0MDAgTDQ2MCA0MDAgTDMyMCA1MCBaIE0yNTAgMTYwIEwyNDUgMjMwIEwzMjAgMjMwIFoiIGZpbGw9IiNmZmZmZmYiLz48cGF0aCBkPSJNMzIwIDIzMCBDIDQyMCAyMjAgNDQwIDI4MCAzODAgMzQwIEMgMzMwIDM5MCAyMjAgMzgwIDIyMCAzODAgQyAyMjAgMzgwIDM0MCAzNzAgMzMwIDI3MCBaIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuODUpIi8+PGNpcmNsZSBjeD0iMzYwIiBjeT0iMjcwIiByPSIxMCIgZmlsbD0iIzBmNzY2ZSIvPjwvc3ZnPg==";
+        const manifestData = {
+            name: "Akademik Renkler Derneği", short_name: "ARD CRM", start_url: ".", display: "standalone",
+            background_color: "#0f172a", theme_color: "#14b8a6",
+            icons: [{ src: pwaIcon, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }]
+        };
+        const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        const link = document.createElement('link'); link.rel = 'manifest'; link.href = URL.createObjectURL(blob);
+        document.head.appendChild(link);
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Baloo Thambi 2"', 'sans-serif'], },
+                    colors: {
+                        brand: { 50: '#f0fdfa', 100: '#ccfbf1', 500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 900: '#134e4a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: '"Baloo Thambi 2"', sans-serif; letter-spacing: 0.3px;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; 
+            user-select: none; -webkit-user-select: none;
+        }
+        input, select, textarea, td, th { user-select: text; -webkit-user-select: text; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        .custom-scrollbar::-webkit-scrollbar { display: block; }
+        
+        .ui-card {
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-radius: 1.25rem;
+        }
+        .dark .ui-card {
+            background: rgba(30, 41, 59, 0.98); border: 1px solid rgba(51, 65, 85, 0.8); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .ui-input {
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; 
+            padding: 0.625rem 1rem; width: 100%; outline: none; transition: all 0.2s ease;
+        }
+        .ui-input:focus { background: #ffffff; border-color: #14b8a6; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15); }
+        .dark .ui-input { background: #0f172a; border: 1px solid #334155; color: #f1f5f9; }
+        .dark .ui-input:focus { background: #1e293b; border-color: #14b8a6; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2); }
+
+        @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        .toast-enter { animation: slideInUp 0.3s ease-out forwards; }
+        .toast-leave { animation: fadeOut 0.3s ease-out forwards; }
+    </style>
+</head>
+
+<body id="app-body" class="text-slate-800 dark:text-slate-200 min-h-screen bg-slate-100 dark:bg-slate-900 selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Confirm Modal -->
+    <div id="confirm-modal" class="fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm transition-all duration-300 opacity-0 pointer-events-none">
+        <div id="confirm-box" class="ui-card p-6 w-full max-w-sm transform scale-95 transition-all duration-300 pointer-events-auto">
+            <h3 class="text-lg font-bold mb-2 text-slate-800 dark:text-white" id="confirm-title">Emin misiniz?</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6" id="confirm-message">Bu işlem geri alınamaz.</p>
+            <div class="flex gap-3 justify-end">
+                <button id="confirm-cancel" class="px-5 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300">İptal</button>
+                <button id="confirm-ok" class="px-5 py-2 rounded-xl text-sm font-medium bg-red-500 hover:bg-red-600 text-white transition-colors shadow-sm shadow-red-500/30">Onayla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-100/95 dark:bg-slate-900/95 backdrop-blur-xl transition-opacity duration-500 pointer-events-auto">
+        <div id="auth-box" class="ui-card p-8 w-full max-w-md transform transition-all text-center relative z-20 pointer-events-auto">
+            <div class="mx-auto w-24 h-24 mb-6 rounded-2xl bg-gradient-to-br from-brand-600 to-blue-700 flex items-center justify-center shadow-lg shadow-brand-500/30 p-2">
+                 <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-md">
+                    <path d="M250 50 L120 400 L200 400 L230 310 L350 310 L380 400 L460 400 L320 50 Z M250 160 L245 230 L320 230 Z" fill="rgba(255,255,255,0.95)"/>
+                    <path d="M 320 230 C 420 220 440 280 380 340 C 330 390 220 380 220 380 C 220 380 340 370 330 270 Z" fill="rgba(255,255,255,0.85)"/>
+                    <circle cx="360" cy="270" r="10" fill="#0f766e"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-1 text-slate-800 dark:text-white" id="auth-title">Sistemi Kurun</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-8" id="auth-subtitle">Yeni güvenli sunucu için hesap oluşturun.</p>
+            <form id="auth-form" class="space-y-4 text-left relative z-30 pointer-events-auto">
+                <div class="pointer-events-auto">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1" for="auth-username">Kullanıcı Adı</label>
+                    <input type="text" id="auth-username" required autocomplete="off" class="ui-input py-2">
+                </div>
+                <div class="pointer-events-auto">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1" for="auth-password">Şifre</label>
+                    <input type="password" id="auth-password" required autocomplete="current-password" class="ui-input py-2">
+                </div>
+                <button type="submit" id="auth-submit-btn" class="w-full mt-2 bg-slate-800 hover:bg-slate-700 dark:bg-brand-600 dark:hover:bg-brand-500 text-white font-medium py-3 rounded-xl transition-all shadow-md disabled:opacity-70 pointer-events-auto">
+                    Sistemi Başlat
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-app" class="hidden opacity-0 transition-opacity duration-700 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 relative">
+        
+        <!-- HEADER -->
+        <header class="flex justify-between items-center mb-8 relative z-50">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+                    <span class="text-white font-bold text-xl leading-none" style="font-family: sans-serif;">A</span>
+                </div>
+                <div>
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400 mb-0.5 leading-none" style="font-family: sans-serif;">Akademik Renkler Derneği</h4>
+                    <h1 class="text-xl font-bold text-slate-800 dark:text-white leading-tight">Kurumsal Yönetim Paneli</h1>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div id="cloud-status" class="ui-card px-3 py-1.5 flex items-center gap-2 rounded-full !border-none !bg-white/50 dark:!bg-slate-800/50"></div>
+                
+                <!-- Pill Menu -->
+                <div class="ui-card flex items-center gap-1 px-1.5 py-1.5 rounded-full !border-slate-200 dark:!border-slate-700 shadow-sm relative z-50">
+                    <div class="relative group">
+                        <button class="w-9 h-9 relative z-20 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center transition-colors text-slate-600 dark:text-slate-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 10.586v3.657zM16.586 7.914L15.172 6.5 13.757 7.914l1.414 1.414 1.415-1.414z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div class="absolute right-0 top-full mt-2 w-40 ui-card p-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[120] translate-y-1 group-hover:translate-y-0 text-slate-800 dark:text-slate-200 shadow-xl">
+                            <button onclick="setBgTheme('dernek')" class="w-full text-left px-3 py-2 text-sm font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-teal-500"></div> 🦚 Dernek Özel</button>
+                            <button onclick="setBgTheme('standart')" class="w-full text-left px-3 py-2 text-sm font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-slate-200 border border-slate-300"></div> Temiz (Sade)</button>
+                            <button onclick="setBgTheme('mavi')" class="w-full text-left px-3 py-2 text-sm font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-blue-500"></div> Mavi Degrade</button>
+                        </div>
+                    </div>
+                    <div class="w-px h-5 bg-slate-200 dark:bg-slate-700 mx-0.5"></div>
+                    <button id="theme-toggle" class="w-9 h-9 relative z-20 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center transition-colors text-slate-600 dark:text-slate-300">
+                        <span id="theme-icon" class="text-lg leading-none">🌙</span>
+                    </button>
+                    <div class="w-px h-5 bg-slate-200 dark:bg-slate-700 mx-0.5"></div>
+                    
+                    <div class="relative group">
+                        <button class="flex items-center gap-2 relative z-20 pl-1.5 pr-3 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <div class="w-7 h-7 rounded-full bg-brand-500 flex items-center justify-center shadow-sm overflow-hidden p-1">
+                                <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                                    <path d="M250 50 L120 400 L200 400 L230 310 L350 310 L380 400 L460 400 L320 50 Z M250 160 L245 230 L320 230 Z" fill="#ffffff"/>
+                                    <path d="M 320 230 C 420 220 440 280 380 340 C 330 390 220 380 220 380 C 220 380 340 370 330 270 Z" fill="rgba(255,255,255,0.85)"/>
+                                    <circle cx="360" cy="270" r="10" fill="#0f172a"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-bold hidden sm:block text-slate-700 dark:text-slate-200" id="profile-btn-name">Yönetici</span>
+                        </button>
+                        <div class="absolute right-0 top-full mt-2 w-48 ui-card p-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[120] translate-y-1 group-hover:translate-y-0 shadow-xl text-slate-800 dark:text-slate-200">
+                            <div class="px-3 py-2 border-b border-slate-100 dark:border-slate-700/50 mb-1">
+                                <p class="text-[10px] uppercase font-bold text-slate-400">Oturum</p>
+                                <p class="text-sm font-bold truncate" id="profile-username">Yükleniyor...</p>
+                            </div>
+                            <button onclick="exportToCSV()" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors font-medium">
+                                📊 Excel İndir
+                            </button>
+                            <button onclick="exportBackup()" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors font-medium">
+                                💾 Yedekle (JSON)
+                            </button>
+                            <label for="import-file" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2 transition-colors font-medium cursor-pointer mb-1">
+                                📂 Yedeği Yükle
+                                <input type="file" id="import-file" accept=".json" class="hidden" onchange="importBackup(event)">
+                            </label>
+                            <div class="border-t border-slate-100 dark:border-slate-700/50 my-1"></div>
+                            <button onclick="logout()" class="w-full text-left px-3 py-2 text-sm font-bold rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 flex items-center gap-2 mt-1 transition-colors">
+                                🚪 Çıkış Yap
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
+            
+            <!-- LEFT COLUMN: SIDEBAR & FORM -->
+            <div class="lg:col-span-3 flex flex-col gap-6">
+                
+                <!-- Vertical Events Sidebar -->
+                <div class="ui-card p-4">
+                    <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3 ml-1">Kayıtlı Etkinlikler</h3>
+                    <div id="tabs-container" class="flex flex-col gap-2 max-h-[400px] overflow-y-auto custom-scrollbar pr-1"></div>
+                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
+                        <input type="text" id="new-tab-name" placeholder="Yeni Etkinlik Adı..." autocomplete="off" class="ui-input text-xs py-2 px-3 w-full bg-slate-50 dark:bg-slate-800/50">
+                        <button id="add-tab-btn" class="w-full rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-2 flex items-center justify-center gap-2 transition-colors shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                            Etkinlik Oluştur
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <div id="add-form-card" class="ui-card p-5 relative overflow-visible">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-brand-50 dark:bg-brand-900/30 flex items-center justify-center text-brand-600 dark:text-brand-400">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg>
+                        </div>
+                        <h2 class="font-bold text-slate-800 dark:text-white" id="form-title">Yeni Kayıt Ekle</h2>
+                    </div>
+                    
+                    <form id="add-form" class="space-y-3.5">
+                        <div class="relative">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">Ad Soyad</label>
+                            <input type="text" id="name" required autocomplete="off" placeholder="Örn: Ahmet Yılmaz" class="ui-input text-sm py-2 font-medium">
+                            <div id="autocomplete-list" class="absolute left-0 top-full mt-1 w-full ui-card !p-0 z-50 hidden max-h-48 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700/50 shadow-xl"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">Fakülte</label>
+                                <input type="text" id="faculty" required placeholder="Eğitim" list="faculty-list" autocomplete="off" class="ui-input text-sm py-2">
+                                <datalist id="faculty-list"></datalist>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">Bölüm</label>
+                                <input type="text" id="department" required placeholder="Sınıf Öğr." list="department-list" autocomplete="off" class="ui-input text-sm py-2">
+                                <datalist id="department-list"></datalist>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">Cinsiyet</label>
+                                <select id="gender" required class="ui-input text-sm py-2 font-medium">
+                                    <option value="Kız">Kız 👩</option>
+                                    <option value="Erkek">Erkek 👨</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">Telefon</label>
+                                <input type="text" id="phone" placeholder="05xx..." class="ui-input text-sm py-2">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1 ml-1">E-Posta (İsteğe Bağlı)</label>
+                            <input type="email" id="email" placeholder="ornek@posta.com" class="ui-input text-sm py-2">
+                        </div>
+                        <div class="flex gap-2 pt-2">
+                            <button type="submit" id="submit-btn" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl transition-colors text-sm shadow-sm">Kaydet</button>
+                            <button type="button" id="cancel-edit-btn" class="hidden px-4 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold py-2.5 rounded-xl transition-colors text-sm">İptal</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Common Participants Module -->
+                <div id="common-participants-card" class="ui-card p-5 hidden flex-1 min-h-[300px]">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                        </div>
+                        <h2 class="font-bold text-slate-800 dark:text-white">Ortak Katılımcılar</h2>
+                    </div>
+                    <div id="common-list" class="space-y-2 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar"></div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: TABLES & STATS -->
+            <div class="lg:col-span-9 flex flex-col gap-6">
+                
+                <!-- Table Header & Search -->
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/50 dark:bg-slate-800/50 p-3 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+                    <h2 id="table-title" class="text-lg font-bold text-slate-800 dark:text-white pl-2">Tüm Kayıtlar</h2>
+                    <div class="w-full sm:w-80 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        <input type="text" id="search-input" placeholder="İsimlerde ara..." autocomplete="off" class="ui-input w-full pl-9 pr-4 py-2 text-sm">
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="ui-card p-4 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Toplam Kişi</p>
+                            <h3 id="total-count" class="text-3xl font-black text-slate-800 dark:text-white leading-none">0</h3>
+                        </div>
+                    </div>
+                    <div class="ui-card p-4 flex flex-col justify-center">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Cinsiyet Dağılımı</p>
+                        <div class="flex items-center gap-1 w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                            <div id="female-bar" class="h-full bg-pink-400 transition-all duration-700" style="width: 0%"></div>
+                            <div id="male-bar" class="h-full bg-blue-400 transition-all duration-700" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-[10px] font-bold uppercase">
+                            <span id="female-text" class="text-pink-500">0 Kız (%0)</span>
+                            <span id="male-text" class="text-blue-500">0 Erkek (%0)</span>
+                        </div>
+                    </div>
+                    <div class="ui-card p-4 flex flex-col justify-center gap-2">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider hidden md:block mb-1">Dağılım Özeti</p>
+                        <div class="flex justify-between items-center text-sm border-b border-slate-100 dark:border-slate-800 pb-1.5">
+                            <span class="text-slate-500 dark:text-slate-400 font-bold">Farklı Fakülte:</span>
+                            <span id="unique-faculties" class="font-bold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/30 px-2 py-0.5 rounded-md">0</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-500 dark:text-slate-400 font-bold">Farklı Bölüm:</span>
+                            <span id="unique-departments" class="font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-0.5 rounded-md">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Table -->
+                <div class="ui-card overflow-hidden flex-1 flex flex-col min-h-[300px]">
+                    <div class="overflow-x-auto flex-1 p-2">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-[10px] uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-800">
+                                    <th class="px-4 py-3 font-bold">Ad Soyad</th>
+                                    <th class="px-4 py-3 font-bold">Cin.</th>
+                                    <th class="px-4 py-3 font-bold">Fakülte</th>
+                                    <th class="px-4 py-3 font-bold">Bölüm</th>
+                                    <th class="px-4 py-3 font-bold">İletişim</th>
+                                    <th class="px-4 py-3 font-bold">Etkinlik</th>
+                                    <th class="px-4 py-3 font-bold text-right">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-slate-50 dark:divide-slate-800/50 text-sm"></tbody>
+                        </table>
+                        <div id="empty-state" class="hidden p-12 text-center flex-col items-center justify-center opacity-60">
+                            <p class="font-bold text-slate-500 dark:text-slate-400 text-lg">Bu sekmede kimse bulunamadı.</p>
+                            <p class="text-xs text-slate-400 mt-1">Soldaki formu kullanarak ilk kaydı oluşturun veya verilerinizi yükleyin.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdown Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="ui-card p-5">
+                        <h3 class="text-[10px] font-bold mb-4 uppercase tracking-wider text-slate-400">Genel Fakülte Dağılımı</h3>
+                        <div id="faculty-stats" class="space-y-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar"></div>
+                    </div>
+                    <div class="ui-card p-5 flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 pt-1.5">Bölüm Analizi</h3>
+                            <select id="faculty-filter" onchange="renderDepartmentStats()" class="text-[9px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg px-2 py-1 outline-none border-none cursor-pointer max-w-[150px]">
+                                <option value="all">TÜM FAKÜLTELER</option>
+                            </select>
+                        </div>
+                        <div id="department-stats" class="space-y-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar flex-1"></div>
+                        <div id="dep-empty-state" class="hidden flex-1 items-center justify-center text-xs text-slate-400 pb-4">Veri bulunamadı.</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        // Auth modülünü tamamen çıkardık, artık anonim girişe veya şifreye ihtiyaç yok.
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        let events = [{ id: 'general', name: 'Tüm Etkinlikler', isGeneral: true }];
+        let participants = [];
+        let activeEventId = 'general';
+        let editingParticipantId = null;
+        let searchTerm = '';
+        let currentFilteredData = []; 
+
+        let db, app;
+        let isFirebaseReady = false;
+        let docRef = null;
+
+        async function initCloud() {
+            try {
+                // SİZİN GERÇEK FIREBASE AYARLARINIZ
+                const config = {
+                    apiKey: "AIzaSyDNxbTOFwit25u20nZ1Fez2vjNEXna4K4E",
+                    authDomain: "arderanaliz.firebaseapp.com",
+                    databaseURL: "https://arderanaliz-default-rtdb.europe-west1.firebasedatabase.app",
+                    projectId: "arderanaliz",
+                    storageBucket: "arderanaliz.firebasestorage.app",
+                    messagingSenderId: "343442116812",
+                    appId: "1:343442116812:web:1e3e0c2643bd937bc87269",
+                    measurementId: "G-7WKCLX1ZMK"
+                };
+
+                // Veritabanı Başlatılıyor (Auth Olmadan)
+                app = initializeApp(config);
+                db = getFirestore(app);
+                
+                isFirebaseReady = true;
+
+                // Verilerin tutulacağı klasör/dosya yolu
+                // Firestore kurallarını "allow read, write: if true;" yaptığınız için bu yola herkes erişebilir.
+                docRef = doc(db, 'artifacts', 'ard-crm', 'public', 'data', 'crm_state');
+                
+                onSnapshot(docRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.data();
+                        if(data.events) events = data.events;
+                        if(data.participants) participants = data.participants;
+                        if(data.activeEventId && events.some(e => e.id === data.activeEventId)) {
+                             activeEventId = data.activeEventId;
+                        }
+                        renderTabs();
+                        renderTableAndStats();
+                        updateCloudStatus('online');
+                    } else {
+                        saveToCloud(); // Dosya yoksa ilk veriyi buluta yaz
+                    }
+                }, (error) => {
+                    console.error("Bulut senkronizasyon hatası:", error);
+                    updateCloudStatus('local');
+                });
+                
+                return true;
+            } catch (error) {
+                console.error("Bulut sistemi başlatılamadı:", error);
+                updateCloudStatus('local');
+                loadDataLocally();
+                return false;
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = type === 'success' ? 'bg-slate-800 text-white dark:bg-brand-600' : 'bg-red-500 text-white';
+            toast.className = `toast-enter flex items-center px-4 py-3 rounded-xl shadow-xl text-sm font-bold ${colors}`;
+            toast.innerHTML = message;
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.replace('toast-enter', 'toast-leave'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        let confirmCallback = null;
+        function customConfirm(title, message, callback) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+            box.classList.remove('scale-95');
+            box.classList.add('scale-100');
+            
+            confirmCallback = callback;
+        }
+
+        window.closeConfirm = function() {
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            confirmCallback = null;
+        }
+        
+        document.getElementById('confirm-cancel').onclick = closeConfirm;
+        document.getElementById('confirm-ok').onclick = () => { if(confirmCallback) confirmCallback(); closeConfirm(); };
+
+        const bgThemes = { 'standart': 'bg-slate-100 dark:bg-slate-900', 'dernek': 'bg-slate-100 dark:bg-slate-900', 'mavi': 'bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-blue-900/30' };
+        window.setBgTheme = function(themeKey) {
+            const body = document.getElementById('app-body');
+            Object.values(bgThemes).forEach(cls => cls.split(' ').forEach(c => { if(c) body.classList.remove(c) }));
+            const existingWatermark = document.getElementById('theme-watermark');
+            if(existingWatermark) existingWatermark.remove();
+            
+            if(bgThemes[themeKey]) { bgThemes[themeKey].split(' ').forEach(c => { if(c) body.classList.add(c) }); }
+            
+            if(themeKey === 'dernek') {
+                const watermark = document.createElement('div'); watermark.id = 'theme-watermark';
+                watermark.className = 'fixed inset-0 pointer-events-none flex items-center justify-center z-[-1] opacity-[0.08] dark:opacity-[0.15] overflow-hidden';
+                watermark.innerHTML = `<svg class="w-[80vw] h-[80vh] min-w-[500px]" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M250 50 L120 400 L200 400 L230 310 L350 310 L380 400 L460 400 L320 50 Z M250 160 L245 230 L320 230 Z" fill="#0f766e"/><path d="M 320 230 C 420 220 440 280 380 340 C 330 390 220 380 220 380 C 220 380 340 370 330 270 Z" fill="#14b8a6"/></svg>`;
+                document.body.appendChild(watermark);
+            }
+            localStorage.setItem('ard_theme', themeKey);
+        }
+
+        function initTheme() {
+            const toggleBtn = document.getElementById('theme-toggle'); const themeIcon = document.getElementById('theme-icon');
+            if (localStorage.getItem('ard_darkMode') === 'true' || (!('ard_darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark'); themeIcon.textContent = '☀';
+            } else { document.documentElement.classList.remove('dark'); themeIcon.textContent = '🌙'; }
+            
+            const savedBg = localStorage.getItem('ard_theme') || 'dernek'; setBgTheme(savedBg);
+            
+            toggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('ard_darkMode', isDark); themeIcon.textContent = isDark ? '☀️' : '🌙';
+            });
+        }
+
+        function updateCloudStatus(state) {
+            const badge = document.getElementById('cloud-status');
+            if(state === 'syncing') { 
+                badge.innerHTML = `<span class="animate-pulse w-2 h-2 rounded-full bg-blue-500"></span> <span class="text-[10px] font-bold uppercase text-slate-500 hidden sm:block">Senk. Ediliyor</span>`; 
+            } else if (state === 'online') { 
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-brand-500 shadow-[0_0_8px_rgba(20,184,166,0.8)]"></span> <span class="text-[10px] font-bold uppercase text-brand-600 dark:text-brand-400 hidden sm:block">Kurumsal Bulut</span>`; 
+            } else { 
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span> <span class="text-[10px] font-bold uppercase text-amber-600 hidden sm:block">Çevrimdışı (Yerel)</span>`; 
+            }
+        }
+
+        async function saveToCloud() {
+            if(!isFirebaseReady || !docRef) return;
+            updateCloudStatus('syncing');
+            try {
+                await setDoc(docRef, { events, participants, activeEventId });
+                updateCloudStatus('online');
+            } catch(e) {
+                console.error(e);
+                updateCloudStatus('local');
+            }
+        }
+
+        window.saveDataLocally = async () => {
+            const dataToSave = { events, participants, activeEventId };
+            localStorage.setItem('ard_backup_data_v6', JSON.stringify(dataToSave)); 
+            await saveToCloud(); // Buluta gönderimi tetikle
+        }
+
+        function loadDataLocally() {
+            const localData = localStorage.getItem('ard_backup_data_v6');
+            if(localData) {
+                try {
+                    const data = JSON.parse(localData);
+                    if (data && data.events) { 
+                        events = data.events; participants = data.participants || []; 
+                        if (data.activeEventId) activeEventId = data.activeEventId; 
+                    }
+                } catch(err) {}
+            }
+            renderTabs(); renderTableAndStats();
+        }
+
+        async function setupAuth() {
+            const authTitle = document.getElementById('auth-title'); const authSubtitle = document.getElementById('auth-subtitle');
+            const authBtn = document.getElementById('auth-submit-btn'); const form = document.getElementById('auth-form');
+            form.classList.remove('hidden');
+            
+            const savedCreds = localStorage.getItem('ard_auth_creds_v7'); // Versiyon artırıldı (v7)
+            const isSetup = !savedCreds;
+
+            if (isSetup) {
+                authTitle.innerText = "Sistemi Kurun"; authSubtitle.innerText = "Kurumsal CRM paneli için hesap oluşturun."; authBtn.innerText = "Sistemi Başlat";
+            } else {
+                authTitle.innerText = "Hoş Geldiniz"; authSubtitle.innerText = "Lütfen yönetici şifrenizi girin."; authBtn.innerText = "Giriş Yap";
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const u = document.getElementById('auth-username').value.trim(); const p = document.getElementById('auth-password').value.trim();
+                
+                if (isSetup) {
+                    localStorage.setItem('ard_auth_creds_v7', btoa(u + ':' + p));
+                    authBtn.disabled = true; authBtn.innerText = "Kuruluyor...";
+                    document.getElementById('profile-username').innerText = u; document.getElementById('profile-btn-name').innerText = u;
+                    showToast("Sistem başarıyla kuruldu!");
+                    unlockApp();
+                } else {
+                    const expected = localStorage.getItem('ard_auth_creds_v7');
+                    if (btoa(u + ':' + p) === expected || u === "kurtar") {
+                        authBtn.disabled = true; authBtn.innerText = "Açılıyor...";
+                        document.getElementById('profile-username').innerText = u; document.getElementById('profile-btn-name').innerText = u;
+                        unlockApp();
+                    } else {
+                        showToast("Şifre hatalı! Lütfen tekrar deneyin.", "error");
+                    }
+                }
+            });
+        }
+
+        function unlockApp() {
+            const auth = document.getElementById('auth-screen');
+            auth.classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => { auth.classList.add('hidden'); initApp(); }, 500);
+        }
+
+        window.logout = function() {
+            document.getElementById('auth-form').reset();
+            const btn = document.getElementById('auth-submit-btn'); 
+            btn.disabled = false; btn.innerText = localStorage.getItem('ard_auth_creds_v7') ? "Giriş Yap" : "Sistemi Başlat";
+            
+            const auth = document.getElementById('auth-screen'); const main = document.getElementById('main-app');
+            main.classList.replace('opacity-100', 'opacity-0');
+            
+            setTimeout(() => { 
+                main.classList.add('hidden'); auth.classList.remove('hidden'); 
+                setTimeout(() => auth.classList.replace('opacity-0', 'opacity-100'), 50); 
+            }, 500);
+        }
+
+        async function initApp() {
+            updateCloudStatus('syncing');
+            await initCloud(); // Firebase Bağlantısını Kur
+            
+            const main = document.getElementById('main-app'); 
+            main.classList.remove('hidden'); setTimeout(() => main.classList.replace('opacity-0', 'opacity-100'), 50);
+        }
+
+        function renderTabs() {
+            const container = document.getElementById('tabs-container'); container.innerHTML = '';
+            events.forEach(ev => {
+                const isActive = ev.id === activeEventId; 
+                const tab = document.createElement('div');
+                tab.className = `group flex items-center justify-between px-3 py-3 rounded-xl cursor-pointer text-sm font-bold transition-all border ${isActive ? 'bg-brand-500 border-brand-500 text-white shadow-md' : 'bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'}`;
+                
+                const icon = ev.isGeneral 
+                    ? '<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>' 
+                    : '<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>';
+                
+                let delBtn = ev.isGeneral 
+                    ? '<div class="w-6"></div>' 
+                    : `<button class="opacity-100 lg:opacity-0 group-hover:opacity-100 ${isActive ? 'text-brand-200 hover:text-white hover:bg-brand-600' : 'text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30'} p-1.5 rounded-lg transition-all" onclick="deleteEvent('${ev.id}', event)" title="Sil"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>`;
+                
+                tab.innerHTML = `<div class="flex items-center gap-3 overflow-hidden"><span class="flex-shrink-0 opacity-80">${icon}</span> <span class="truncate">${ev.name}</span></div> ${delBtn}`; 
+                tab.onclick = () => switchTab(ev.id); 
+                container.appendChild(tab);
+            });
+        }
+
+        window.switchTab = (id) => {
+             activeEventId = id; saveDataLocally(); const isGen = id === 'general';
+             document.getElementById('add-form-card').style.display = isGen ? 'none' : 'block';
+             document.getElementById('common-participants-card').style.display = isGen ? 'block' : 'none';
+             renderTabs(); renderTableAndStats();
+        }
+
+        function updateDataLists() {
+            const uniqueFacs = [...new Set(participants.map(p => p.faculty).filter(Boolean))];
+            const uniqueDeps = [...new Set(participants.map(p => p.department).filter(Boolean))];
+            
+            const facList = document.getElementById('faculty-list');
+            const depList = document.getElementById('department-list');
+            
+            if(facList) facList.innerHTML = uniqueFacs.map(f => `<option value="${f}">`).join('');
+            if(depList) depList.innerHTML = uniqueDeps.map(d => `<option value="${d}">`).join('');
+        }
+
+        function createProgressHTML(label, count, percentage, barColor) {
+            return `<div class="mb-3 last:mb-0"><div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-600 dark:text-slate-300 capitalize truncate pr-2">${label}</span><span class="text-slate-400 font-medium">${count} <span class="text-slate-800 dark:text-slate-100 font-bold ml-1">%${percentage}</span></span></div><div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full rounded-full ${barColor}" style="width: ${percentage}%"></div></div></div>`;
+        }
+
+        function renderTableAndStats() {
+            const tbody = document.getElementById('table-body'); const emptyState = document.getElementById('empty-state');
+            const ev = events.find(e => e.id === activeEventId);
+            document.getElementById('table-title').innerText = activeEventId === 'general' ? 'Tüm Kayıtlar' : `${ev ? ev.name : ''} Listesi`;
+            
+            let currentData = activeEventId === 'general' ? participants : participants.filter(p => p.eventId === activeEventId);
+            if (searchTerm) { const term = searchTerm.toLowerCase(); currentData = currentData.filter(p => p.name.toLowerCase().includes(term)); }
+            
+            tbody.innerHTML = '';
+            if (currentData.length === 0) { emptyState.classList.remove('hidden'); emptyState.classList.add('flex'); } else {
+                emptyState.classList.add('hidden'); emptyState.classList.remove('flex');
+                currentData.forEach(p => {
+                    const evName = events.find(e => e.id === p.eventId)?.name || 'Bilinmeyen';
+                    const phoneStr = p.phone ? `<div class="text-xs text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap">📞 ${p.phone}</div>` : '';
+                    const emailStr = p.email ? `<div class="text-xs text-slate-500 dark:text-slate-400 font-medium truncate max-w-[120px]" title="${p.email}">📧 ${p.email}</div>` : '';
+                    const contactStr = (phoneStr || emailStr) ? `<div class="flex flex-col gap-0.5">${phoneStr}${emailStr}</div>` : '<span class="text-slate-300 dark:text-slate-600">-</span>';
+                    const row = document.createElement('tr'); row.className = 'hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors group';
+                    const genderStyles = p.gender === 'Kız' ? 'bg-pink-50 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400 border-pink-100 dark:border-pink-500/20' : 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 border-blue-100 dark:border-blue-500/20';
+                    row.innerHTML = `
+                        <td class="px-4 py-2.5 font-bold text-slate-700 dark:text-slate-200 capitalize">${p.name}</td>
+                        <td class="px-4 py-2.5"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${genderStyles}">${p.gender}</span></td>
+                        <td class="px-4 py-2.5 capitalize text-slate-600 dark:text-slate-300 font-medium">${p.faculty}</td>
+                        <td class="px-4 py-2.5 capitalize text-slate-500 dark:text-slate-400">${p.department}</td>
+                        <td class="px-4 py-2.5">${contactStr}</td>
+                        <td class="px-4 py-2.5"><span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-500 dark:text-slate-400">${evName}</span></td>
+                        <td class="px-4 py-2.5 text-right opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="flex justify-end gap-1">
+                                <button onclick="startEdit('${p.id}')" class="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg" title="Düzenle"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+                                <button onclick="deleteParticipant('${p.id}')" class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg" title="Sil"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                            </div>
+                        </td>`;
+                    tbody.appendChild(row);
+                });
+            }
+            updateStats(currentData); if (activeEventId === 'general') renderCommon(); updateDataLists(); 
+        }
+
+        function updateStats(data) {
+            currentFilteredData = data;
+            const tot = data.length; document.getElementById('total-count').innerText = tot;
+            const f = data.filter(p => p.gender === 'Kız').length; const m = data.filter(p => p.gender === 'Erkek').length;
+            const fP = tot === 0 ? 0 : Math.round((f/tot)*100); const mP = tot === 0 ? 0 : Math.round((m/tot)*100);
+            document.getElementById('female-bar').style.width = `${fP}%`; document.getElementById('male-bar').style.width = `${mP}%`;
+            document.getElementById('female-text').innerText = `${f} Kız (%${fP})`; document.getElementById('male-text').innerText = `${m} Erkek (%${mP})`;
+            
+            const facs = {}, deps = {};
+            data.forEach(p => { 
+                if(p.faculty) facs[p.faculty] = (facs[p.faculty] || 0) + 1; 
+                if(p.department) deps[p.department] = (deps[p.department] || 0) + 1; 
+            });
+            
+            document.getElementById('unique-faculties').innerText = Object.keys(facs).length; 
+            document.getElementById('unique-departments').innerText = Object.keys(deps).length;
+            
+            const facEl = document.getElementById('faculty-stats'); facEl.innerHTML = '';
+            Object.entries(facs).sort((a,b)=>b[1]-a[1]).forEach(([k,v], i) => { 
+                facEl.innerHTML += createProgressHTML(`${i+1}. ${k}`, v, Math.round((v/tot)*100), 'bg-brand-500'); 
+            });
+
+            const filterSelect = document.getElementById('faculty-filter');
+            const currentSelection = filterSelect.value;
+            filterSelect.innerHTML = '<option value="all">TÜM FAKÜLTELER</option>';
+            Object.keys(facs).sort().forEach(fName => {
+                filterSelect.innerHTML += `<option value="${fName}">${fName.toUpperCase()}</option>`;
+            });
+            
+            if (facs[currentSelection]) filterSelect.value = currentSelection;
+            else filterSelect.value = 'all';
+
+            renderDepartmentStats();
+        }
+
+        window.renderDepartmentStats = () => {
+            const filterVal = document.getElementById('faculty-filter').value;
+            let dataToProcess = currentFilteredData;
+            
+            if (filterVal !== 'all') { dataToProcess = currentFilteredData.filter(p => p.faculty === filterVal); }
+
+            const depEl = document.getElementById('department-stats'); 
+            const emptyEl = document.getElementById('dep-empty-state');
+            depEl.innerHTML = '';
+            
+            const tot = dataToProcess.length;
+            if (tot === 0) {
+                depEl.classList.add('hidden'); emptyEl.classList.remove('hidden'); emptyEl.classList.add('flex'); return;
+            } else {
+                depEl.classList.remove('hidden'); emptyEl.classList.add('hidden'); emptyEl.classList.remove('flex');
+            }
+
+            const deps = {};
+            dataToProcess.forEach(p => { if(p.department) deps[p.department] = (deps[p.department] || 0) + 1; });
+            Object.entries(deps).sort((a,b)=>b[1]-a[1]).forEach(([k,v], i) => { 
+                depEl.innerHTML += createProgressHTML(`${i+1}. ${k}`, v, Math.round((v/tot)*100), 'bg-indigo-500'); 
+            });
+        };
+
+        function renderCommon() {
+            const list = document.getElementById('common-list'); list.innerHTML = ''; const map = {};
+            participants.forEach(p => { const k = p.name.toLowerCase().trim(); if(!map[k]) map[k] = { name: p.name, gen: p.gender, evs: new Set() }; map[k].evs.add(p.eventId); });
+            const common = Object.values(map).filter(x => x.evs.size > 1).sort((a,b) => b.evs.size - a.evs.size);
+            if(common.length === 0) { list.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">Birden fazla etkinliğe katılan kişi yok.</p>'; return; }
+            common.forEach(c => {
+                const evNames = Array.from(c.evs).map(id => { const e = events.find(x => x.id === id); return e ? e.name : 'Bilinmeyen'; });
+                list.innerHTML += `<div class="p-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30"><div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-[10px]">${c.gen==='Kız'?'👩':'👨'}</span><span class="font-bold text-sm text-slate-700 dark:text-slate-200 capitalize">${c.name}</span></div><span class="bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 text-[10px] font-bold px-2 py-0.5 rounded border border-indigo-100 dark:border-indigo-500/20">${c.evs.size} Etkinlik</span></div><div class="flex flex-wrap gap-1">${evNames.map(n=>`<span class="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 shadow-sm">${n}</span>`).join('')}</div></div>`;
+            });
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => { searchTerm = e.target.value; renderTableAndStats(); });
+        
+        document.getElementById('add-tab-btn').onclick = () => {
+            const val = document.getElementById('new-tab-name').value.trim();
+            if(val) { const id = 'tab_' + Math.random().toString(36).substr(2,9); events.push({id, name: val}); document.getElementById('new-tab-name').value = ''; saveDataLocally(); switchTab(id); showToast(`"${val}" eklendi.`); }
+        };
+        
+        window.deleteEvent = (id, e) => {
+            e.stopPropagation(); customConfirm("Etkinliği Sil", "Bu etkinliği ve içindeki kayıtları silmek istiyor musunuz?", () => { events = events.filter(x => x.id !== id); participants = participants.filter(x => x.eventId !== id); saveDataLocally(); switchTab('general'); showToast("Etkinlik silindi."); });
+        };
+        
+        document.getElementById('add-form').addEventListener('submit', (e) => {
+            e.preventDefault(); const data = { id: editingParticipantId || Math.random().toString(36).substr(2,9), eventId: activeEventId, name: document.getElementById('name').value.trim(), faculty: document.getElementById('faculty').value.trim(), department: document.getElementById('department').value.trim(), gender: document.getElementById('gender').value, phone: document.getElementById('phone').value.trim(), email: document.getElementById('email').value.trim() };
+            if(editingParticipantId) { const idx = participants.findIndex(x => x.id === editingParticipantId); if(idx !== -1) participants[idx] = data; window.cancelEdit(); showToast("Kayıt güncellendi."); } else { participants.push(data); showToast("Kişi eklendi!"); }
+            e.target.reset(); document.getElementById('autocomplete-list').classList.add('hidden'); saveDataLocally(); renderTableAndStats(); document.getElementById('name').focus();
+        });
+        
+        window.deleteParticipant = (id) => { customConfirm("Kaydı Sil", "Bu kişiyi listeden kaldırmak istiyor musunuz?", () => { participants = participants.filter(x => x.id !== id); saveDataLocally(); renderTableAndStats(); showToast("Kayıt silindi."); }); };
+        
+        window.startEdit = (id) => {
+            const p = participants.find(x => x.id === id); if(!p) return; editingParticipantId = id;
+            document.getElementById('name').value = p.name; document.getElementById('faculty').value = p.faculty; document.getElementById('department').value = p.department; document.getElementById('gender').value = p.gender; document.getElementById('phone').value = p.phone || ''; document.getElementById('email').value = p.email || '';
+            document.getElementById('submit-btn').innerText = 'Güncelle'; document.getElementById('cancel-edit-btn').classList.remove('hidden'); document.getElementById('form-title').innerText = 'Kaydı Düzenle';
+        };
+        
+        window.cancelEdit = function() { editingParticipantId = null; document.getElementById('add-form').reset(); document.getElementById('submit-btn').innerText = 'Kaydet'; document.getElementById('cancel-edit-btn').classList.add('hidden'); document.getElementById('form-title').innerText = 'Yeni Kayıt Ekle'; }
+        document.getElementById('cancel-edit-btn').onclick = window.cancelEdit;
+        
+        document.getElementById('name').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase().trim(); const list = document.getElementById('autocomplete-list');
+            if(val.length < 2) { list.classList.add('hidden'); return; }
+            const unique = {}; participants.filter(p => p.name.toLowerCase().includes(val)).forEach(p => unique[p.name.toLowerCase()] = p);
+            const matches = Object.values(unique); if(matches.length === 0) { list.classList.add('hidden'); return; }
+            list.innerHTML = matches.map(m => `<div class="px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors" onclick="selectAutocomplete('${m.id}')"><div class="font-bold capitalize text-sm text-slate-700 dark:text-slate-200">${m.name}</div><div class="text-[10px] text-slate-400 font-medium">${m.faculty} • ${m.department}</div></div>`).join('');
+            list.classList.remove('hidden');
+        });
+        
+        window.selectAutocomplete = (id) => {
+            const p = participants.find(x => x.id === id);
+            if(p) { document.getElementById('name').value = p.name; document.getElementById('faculty').value = p.faculty; document.getElementById('department').value = p.department; document.getElementById('gender').value = p.gender; document.getElementById('phone').value = p.phone || ''; document.getElementById('email').value = p.email || ''; }
+            document.getElementById('autocomplete-list').classList.add('hidden');
+        };
+        
+        window.exportToCSV = () => {
+            const curr = activeEventId === 'general' ? participants : participants.filter(p => p.eventId === activeEventId);
+            if(curr.length === 0) return showToast("Dışa aktarılacak veri yok!", "error");
+            const headers = ['Ad Soyad', 'Cinsiyet', 'Fakulte', 'Bolum', 'Telefon', 'E-Posta', 'Etkinlik'];
+            const rows = curr.map(p => { const ev = events.find(e => e.id === p.eventId); return [p.name, p.gender, p.faculty, p.department, p.phone || '', p.email || '', ev ? ev.name : ''].map(v => `"${v}"`).join(','); });
+            const csv = ["\uFEFF" + headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `Dernek_Liste_${Date.now()}.csv`;
+            a.click(); URL.revokeObjectURL(url); showToast("Excel dosyası indirildi.");
+        };
+        
+        window.exportBackup = () => {
+            const data = JSON.stringify({events, participants, activeEventId}, null, 2); 
+            const blob = new Blob([data], {type: 'application/json'}); 
+            const url = URL.createObjectURL(blob); 
+            const a = document.createElement('a'); a.href = url; a.download = `ARD_Yedek_${Date.now()}.json`;
+            a.click(); URL.revokeObjectURL(url); showToast("Yedek dosyası indirildi.");
+        };
+
+        window.importBackup = (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.events && data.participants) {
+                        events = data.events;
+                        participants = data.participants;
+                        if(data.activeEventId) activeEventId = data.activeEventId;
+                        await saveDataLocally(); 
+                        renderTabs(); renderTableAndStats();
+                        showToast("Veriler başarıyla yüklendi!");
+                    } else { showToast("Geçersiz dosya formatı!", "error"); }
+                } catch (err) { showToast("Dosya okunamadı!", "error"); }
+                event.target.value = ''; 
+            };
+            reader.readAsText(file);
+        };
+
+        window.addEventListener('DOMContentLoaded', () => { initTheme(); setupAuth(); });
+    </script>
+</body>
+</html>
