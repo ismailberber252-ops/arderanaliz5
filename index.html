@@ -1,46 +1,348 @@
-<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="tr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akademik Renkler Derneği - Kurumsal Yönetim Paneli</title>
+    
+    <!-- PWA & Mobile Web Tags -->
+    <meta name="theme-color" content="#0d9488">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ARD CRM">
+
+    <!-- Embedded High-Definition SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230d9488'/%3E%3Cstop offset='100%25' stop-color='%232563eb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Cpath d='M50 16 L28 78 L42 78 L47 62 L69 62 L74 78 L88 78 Z M50 36 L43 51 L57 51 Z' fill='%23ffffff'/%3E%3Cpath d='M 57 51 C 75 48 79 59 69 68 C 60 77 41 74 41 74 C 41 74 61 73 59 58 Z' fill='%235eead4'/%3E%3C/svg%3E">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#0d9488',
+                            600: '#0f766e',
+                            700: '#115e59'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Glassmorphism Card Utilities */
+        .ui-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        }
+
+        .dark .ui-card {
+            background: rgba(15, 23, 42, 0.85);
+            border-color: rgba(51, 65, 85, 0.6);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Defensive styling: Prevent hidden modals from flashing unstyled */
+        .modal-hidden {
+            display: none !important;
+        }
+
+        .toast-enter {
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .toast-leave {
+            animation: fadeOut 0.25s ease-in forwards;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.92); }
+        }
+
+        /* Smooth scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+    </style>
+</head>
+
+<body id="app-body" class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full transition-colors duration-300">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[200] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="main-app" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 transition-opacity duration-300">
+        
         <!-- HEADER -->
-        <header class="flex justify-between items-center mb-8 relative z-50">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-blue-600 rounded-xl flex items-center justify-center shadow-sm">
-                    <span class="text-white font-bold text-xl leading-none" style="font-family: sans-serif;">A</span>
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 relative z-30">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 bg-gradient-to-tr from-brand-600 via-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-brand-500/25 ring-2 ring-white/50 dark:ring-slate-700/50">
+                    <span class="text-white font-extrabold text-2xl tracking-tighter">A</span>
                 </div>
                 <div>
-                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400 mb-0.5 leading-none" style="font-family: sans-serif;">Akademik Renkler Derneği</h4>
-                    <h1 class="text-xl font-bold text-slate-800 dark:text-white leading-tight">Kurumsal Yönetim Paneli</h1>
+                    <h4 class="text-[11px] font-extrabold uppercase tracking-widest text-brand-600 dark:text-brand-400 mb-0.5">Akademik Renkler Derneği</h4>
+                    <h1 class="text-2xl font-black text-slate-800 dark:text-white tracking-tight leading-none">Kurumsal Yönetim Paneli</h1>
                 </div>
             </div>
             
-            <div class="flex items-center gap-3">
-                <button id="cloud-status-btn" onclick="openCloudDiagnostics()" class="ui-card px-3 py-1.5 flex items-center gap-2 rounded-full !border-none !bg-white/50 dark:!bg-slate-800/50 hover:ring-2 hover:ring-brand-500 transition-all cursor-pointer">
-                    <span id="cloud-indicator" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
-                    <span id="cloud-status-text" class="text-[11px] font-bold uppercase text-amber-600">Bulut Kontrol...</span>
+            <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end flex-wrap">
+                <!-- Bulut Teşhis & Durum Butonu -->
+                <button id="cloud-status-btn" onclick="openCloudDiagnostics()" class="ui-card px-3.5 py-2 flex items-center gap-2 rounded-xl text-xs font-bold hover:ring-2 hover:ring-brand-500 transition-all cursor-pointer">
+                    <span id="cloud-indicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)]"></span>
+                    <span id="cloud-status-text" class="text-emerald-600 dark:text-emerald-400">Bulut Aktif</span>
                 </button>
                 
-                <!-- Pill Menu -->
-<!-- ... existing code ... -->
-    <!-- Confirm Modal -->
-    <div id="confirm-modal" class="fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm transition-all duration-300 opacity-0 pointer-events-none">
-        <div id="confirm-box" class="ui-card p-6 w-full max-w-sm transform scale-95 transition-all duration-300 pointer-events-auto">
-            <h3 class="text-lg font-bold mb-2 text-slate-800 dark:text-white" id="confirm-title">Emin misiniz?</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6" id="confirm-message">Bu işlem geri alınamaz.</p>
-            <div class="flex gap-3 justify-end">
-                <button id="confirm-cancel" class="px-5 py-2 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300">İptal</button>
-                <button id="confirm-ok" class="px-5 py-2 rounded-xl text-sm font-medium bg-red-500 hover:bg-red-600 text-white transition-colors shadow-sm shadow-red-500/30">Onayla</button>
+                <!-- Tema Değiştirme Butonu -->
+                <button id="theme-toggle" class="ui-card p-2 rounded-xl text-sm hover:ring-2 hover:ring-brand-500 transition-all" title="Karanlık/Aydınlık Mod">
+                    <span id="theme-icon">🌙</span>
+                </button>
+
+                <!-- Dışa/İçe Aktar Menüsü -->
+                <div class="relative group">
+                    <button class="ui-card px-3.5 py-2 flex items-center gap-2 rounded-xl text-xs font-bold hover:ring-2 hover:ring-brand-500 transition-all">
+                        <span>📊 Veri İşlemleri</span>
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 py-2 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 hidden group-hover:block z-50">
+                        <button onclick="exportToCSV()" class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-700/60 flex items-center gap-2 text-slate-700 dark:text-slate-200">
+                            📥 Excel (CSV) İndir
+                        </button>
+                        <button onclick="exportBackup()" class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-700/60 flex items-center gap-2 text-slate-700 dark:text-slate-200">
+                            💾 Yedek İndir (JSON)
+                        </button>
+                        <label class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-700/60 flex items-center gap-2 text-slate-700 dark:text-slate-200 cursor-pointer">
+                            📂 Yedeği Yükle
+                            <input type="file" id="backup-file-input" accept=".json" class="hidden" onchange="importBackup(event)">
+                        </label>
+                        <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+                        <button onclick="logout()" class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center gap-2">
+                            🔒 Çıkış Yap
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD GRID -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- LEFT PANEL: TABS & FORM (4 COLS) -->
+            <div class="lg:col-span-4 space-y-6">
+                
+                <!-- ETKİNLİK SEKMELERİ -->
+                <div class="ui-card p-5 rounded-3xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Etkinlikler</h2>
+                    </div>
+
+                    <!-- Yeni Etkinlik Ekleme -->
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="new-tab-name" placeholder="Yeni etkinlik adı..." class="w-full px-3.5 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                        <button id="add-tab-btn" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold transition-all shadow-sm shadow-brand-500/30 whitespace-nowrap">
+                            + Ekle
+                        </button>
+                    </div>
+
+                    <!-- Sekme Listesi -->
+                    <div id="tabs-container" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- KATILIMCI EKLEME FORMU -->
+                <div id="add-form-card" class="ui-card p-5 rounded-3xl">
+                    <h2 id="form-title" class="text-sm font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Yeni Kayıt Ekle</h2>
+                    <form id="add-form" class="space-y-3">
+                        <div class="relative">
+                            <input type="text" id="name" placeholder="Ad Soyad *" required class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold capitalize">
+                            <!-- Otomatik tamamlama listesi -->
+                            <div id="autocomplete-list" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 hidden z-30 max-h-40 overflow-y-auto"></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <select id="gender" required class="px-3 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-medium">
+                                <option value="Kız">Kız</option>
+                                <option value="Erkek">Erkek</option>
+                            </select>
+
+                            <input type="text" id="phone" placeholder="Telefon (05...)" class="px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <input type="text" id="faculty" list="faculty-list" placeholder="Fakülte *" required class="px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-medium capitalize">
+                            <datalist id="faculty-list"></datalist>
+
+                            <input type="text" id="department" list="department-list" placeholder="Bölüm *" required class="px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-medium capitalize">
+                            <datalist id="department-list"></datalist>
+                        </div>
+
+                        <input type="email" id="email" placeholder="E-Posta Adresi" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+
+                        <div class="flex gap-2 pt-2">
+                            <button type="submit" id="submit-btn" class="flex-1 py-2.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-brand-500/30">
+                                Kaydet
+                            </button>
+                            <button type="button" id="cancel-edit-btn" class="hidden px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold hover:bg-slate-200 transition-all">
+                                İptal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ORTAK KATILIMCILAR KARTI (Tüm Etkinlikler sekmesinde görünür) -->
+                <div id="common-participants-card" class="ui-card p-5 rounded-3xl hidden">
+                    <h2 class="text-sm font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-3 flex items-center gap-2">
+                        <span>✨ Sadık Üyeler</span>
+                        <span class="text-[10px] font-medium text-slate-400 normal-case">(Birden fazla etkinliğe katılanlar)</span>
+                    </h2>
+                    <div id="common-list" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: STATS & DATA TABLE (8 COLS) -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <!-- ÖZET İSTATİSTİK KARTLARI -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+                    <div class="ui-card p-4 rounded-2xl">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Toplam Kayıt</div>
+                        <div id="total-count" class="text-2xl font-black text-slate-800 dark:text-white mt-1">0</div>
+                    </div>
+                    
+                    <div class="ui-card p-4 rounded-2xl">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Fakülte Sayısı</div>
+                        <div id="unique-faculties" class="text-2xl font-black text-brand-600 dark:text-brand-400 mt-1">0</div>
+                    </div>
+
+                    <div class="ui-card p-4 rounded-2xl">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Bölüm Sayısı</div>
+                        <div id="unique-departments" class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1">0</div>
+                    </div>
+
+                    <div class="ui-card p-4 rounded-2xl">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Cinsiyet Dağılımı</div>
+                        <div class="flex items-center gap-1.5 mt-2">
+                            <span id="female-text" class="text-xs font-bold text-pink-600 dark:text-pink-400 whitespace-nowrap">0 Kız</span>
+                            <span class="text-slate-300 dark:text-slate-700">•</span>
+                            <span id="male-text" class="text-xs font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">0 Erkek</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mt-1.5 flex">
+                            <div id="female-bar" class="bg-pink-500 h-full transition-all duration-500" style="width: 50%"></div>
+                            <div id="male-bar" class="bg-blue-500 h-full transition-all duration-500" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAKÜLTE VE BÖLÜM ANALİZ GRAFİKLERİ -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="ui-card p-4 rounded-2xl">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">En Çok Katılım Gösteren Fakülteler</h3>
+                        <div id="faculty-stats" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                    </div>
+
+                    <div class="ui-card p-4 rounded-2xl">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">Bölüm Analizi</h3>
+                            <select id="faculty-filter" onchange="renderDepartmentStats()" class="text-[10px] font-bold px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300">
+                                <option value="all">TÜM FAKÜLTELER</option>
+                            </select>
+                        </div>
+                        <div id="department-stats" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                        <div id="dep-empty-state" class="hidden h-32 items-center justify-center text-xs text-slate-400 font-medium">Bu fakülteye ait kayıt bulunamadı.</div>
+                    </div>
+                </div>
+
+                <!-- KATILIMCI TABLOSU -->
+                <div class="ui-card rounded-3xl overflow-hidden">
+                    <div class="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <h2 id="table-title" class="text-base font-extrabold text-slate-800 dark:text-white">Tüm Kayıtlar</h2>
+                        <div class="w-full sm:w-64">
+                            <input type="text" id="search-input" placeholder="İsim ile hızlı ara..." class="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto max-h-[500px]">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead class="bg-slate-100/70 dark:bg-slate-800/70 sticky top-0 backdrop-blur-md text-slate-500 dark:text-slate-400 uppercase font-bold text-[10px] tracking-wider z-10">
+                                <tr>
+                                    <th class="px-4 py-3">Ad Soyad</th>
+                                    <th class="px-4 py-3">Cinsiyet</th>
+                                    <th class="px-4 py-3">Fakülte</th>
+                                    <th class="px-4 py-3">Bölüm</th>
+                                    <th class="px-4 py-3">İletişim</th>
+                                    <th class="px-4 py-3">Etkinlik</th>
+                                    <th class="px-4 py-3 text-right">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium"></tbody>
+                        </table>
+                    </div>
+
+                    <div id="empty-state" class="p-12 text-center text-slate-400 hidden flex-col items-center justify-center">
+                        <div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xl mb-2">📋</div>
+                        <p class="text-sm font-semibold">Gösterilecek kayıt bulunamadı.</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Sol panelden yeni kişi ekleyebilir veya filtreleri temizleyebilirsiniz.</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- Bulut Bağlantı Teşhis Modalı -->
-    <div id="diag-modal" class="fixed inset-0 z-[160] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-all duration-300 opacity-0 pointer-events-none">
-        <div id="diag-box" class="ui-card p-6 w-full max-w-md transform scale-95 transition-all duration-300 pointer-events-auto">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
-                <h3 class="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-brand-500"></span> Bulut Senkronizasyon Durumu
-                </h3>
-                <button onclick="closeCloudDiagnostics()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg font-bold">&times;</button>
+    <!-- CONFIRM MODAL (Tailwind + Inline defensive display) -->
+    <div id="confirm-modal" class="fixed inset-0 z-[150] items-center justify-center bg-slate-900/40 backdrop-blur-sm transition-all duration-300 modal-hidden" style="display: none;">
+        <div id="confirm-box" class="ui-card p-6 w-full max-w-sm rounded-3xl transform scale-95 transition-all duration-300">
+            <h3 class="text-lg font-bold mb-2 text-slate-800 dark:text-white" id="confirm-title">Emin misiniz?</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6" id="confirm-message">Bu işlem geri alınamaz.</p>
+            <div class="flex gap-3 justify-end">
+                <button id="confirm-cancel" onclick="closeConfirm()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300">İptal</button>
+                <button id="confirm-ok" class="px-5 py-2 rounded-xl text-xs font-bold bg-rose-500 hover:bg-rose-600 text-white transition-colors shadow-sm shadow-rose-500/30">Onayla</button>
             </div>
-            <div id="diag-content" class="text-xs space-y-3 font-mono bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 max-h-60 overflow-y-auto">
+        </div>
+    </div>
+
+    <!-- BULUT TEŞHİS MODALI (Tailwind + Inline defensive display) -->
+    <div id="diag-modal" class="fixed inset-0 z-[160] items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-all duration-300 modal-hidden" style="display: none;">
+        <div id="diag-box" class="ui-card p-6 w-full max-w-md rounded-3xl transform scale-95 transition-all duration-300">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
+                <h3 class="text-sm font-black text-slate-800 dark:text-white flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Bulut Senkronizasyon Durumu
+                </h3>
+                <button onclick="closeCloudDiagnostics()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+            </div>
+            <div id="diag-content" class="text-xs space-y-2 font-mono bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 max-h-60 overflow-y-auto">
                 <div class="text-slate-500">Bağlantı kontrolleri hazırlanıyor...</div>
             </div>
             <div class="mt-4 flex gap-2 justify-end">
@@ -50,14 +352,32 @@
         </div>
     </div>
 
-    <!-- Auth Screen -->
-<!-- ... existing code ... -->
-    <!-- Application Script -->
+    <!-- KİLİT / GİRİŞ EKRANI (AUTH) -->
+    <div id="auth-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/70 backdrop-blur-md transition-opacity duration-300">
+        <div class="ui-card p-8 rounded-3xl w-full max-w-sm shadow-2xl text-center">
+            <div class="w-16 h-16 bg-gradient-to-tr from-brand-600 via-teal-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-brand-500/30">
+                <span class="text-white font-black text-3xl">A</span>
+            </div>
+            <h2 id="auth-title" class="text-xl font-black text-slate-800 dark:text-white mb-1">Yönetici Girişi</h2>
+            <p id="auth-subtitle" class="text-xs text-slate-500 dark:text-slate-400 mb-6">Yönetim paneline erişmek için şifrenizi girin.</p>
+            
+            <form id="auth-form" class="space-y-3.5">
+                <input type="text" id="auth-username" placeholder="Kullanıcı Adı" required class="w-full px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold">
+                <input type="password" id="auth-password" placeholder="Şifre" required class="w-full px-4 py-3 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold">
+                <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-brand-500/30">
+                    Giriş Yap
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
+        // Application State
         let events = [{ id: 'general', name: 'Tüm Etkinlikler', isGeneral: true }];
         let participants = [];
         let activeEventId = 'general';
@@ -67,7 +387,7 @@
 
         let app, dbFirestore, dbRealtime;
         let isCloudConnected = false;
-        let activeSyncProvider = 'none';
+        let activeSyncProvider = 'Realtime Database';
         let diagLogs = [];
 
         function addDiagLog(msg, type = 'info') {
@@ -81,10 +401,9 @@
         window.openCloudDiagnostics = function() {
             const modal = document.getElementById('diag-modal');
             const box = document.getElementById('diag-box');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.classList.add('opacity-100', 'pointer-events-auto');
-            box.classList.remove('scale-95');
-            box.classList.add('scale-100');
+            modal.style.display = 'flex';
+            modal.classList.remove('modal-hidden');
+            setTimeout(() => box.classList.replace('scale-95', 'scale-100'), 10);
             const content = document.getElementById('diag-content');
             if (content) content.innerHTML = diagLogs.join('');
         };
@@ -92,10 +411,11 @@
         window.closeCloudDiagnostics = function() {
             const modal = document.getElementById('diag-modal');
             const box = document.getElementById('diag-box');
-            modal.classList.remove('opacity-100', 'pointer-events-auto');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            box.classList.remove('scale-100');
-            box.classList.add('scale-95');
+            box.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.classList.add('modal-hidden');
+            }, 150);
         };
 
         function updateCloudStatus(status, text) {
@@ -105,17 +425,17 @@
 
             if (status === 'online') {
                 ind.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)]';
-                txt.className = 'text-[11px] font-bold uppercase text-emerald-600 dark:text-emerald-400';
-                txt.textContent = text || 'Bulut Aktif (Senkronize)';
+                txt.className = 'text-emerald-600 dark:text-emerald-400 font-bold text-xs';
+                txt.textContent = text || 'Bulut Aktif';
                 isCloudConnected = true;
             } else if (status === 'syncing') {
                 ind.className = 'w-2.5 h-2.5 rounded-full bg-blue-500 animate-ping';
-                txt.className = 'text-[11px] font-bold uppercase text-blue-600 dark:text-blue-400';
-                txt.textContent = text || 'Senkronize Ediliyor...';
+                txt.className = 'text-blue-600 dark:text-blue-400 font-bold text-xs';
+                txt.textContent = text || 'Senkronize...';
             } else {
                 ind.className = 'w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse';
-                txt.className = 'text-[11px] font-bold uppercase text-amber-600 dark:text-amber-400';
-                txt.textContent = text || 'Yerel Mod (Bulut Bekleniyor)';
+                txt.className = 'text-amber-600 dark:text-amber-400 font-bold text-xs';
+                txt.textContent = text || 'Yerel Mod';
                 isCloudConnected = false;
             }
         }
@@ -142,7 +462,7 @@
                 addDiagLog("Firebase App Hatası: " + err.message, "error");
             }
 
-            // 1. MOTOR: Realtime Database (databaseURL'iniz aktif olduğu için birincil motor)
+            // 1. MOTOR: Realtime Database
             let rtdbSuccess = false;
             try {
                 dbRealtime = getDatabase(app);
@@ -159,20 +479,19 @@
                         if (data.activeEventId) activeEventId = data.activeEventId;
                         renderTabs();
                         renderTableAndStats();
-                        updateCloudStatus('online', 'Bulut Aktif (RTDB)');
+                        updateCloudStatus('online', 'Bulut Aktif');
                     } else {
-                        // Henüz kayıt yoksa yerel veriyi buluta yazdır
                         addDiagLog("Realtime Database boş, yerel veriler buluta aktarılıyor...", "warn");
                         saveToCloud();
                     }
                 }, (error) => {
-                    addDiagLog("Realtime Database Yetki Uyarısı: " + error.message, "warn");
+                    addDiagLog("Realtime Database Uyarısı: " + error.message, "warn");
                 });
             } catch (err) {
-                addDiagLog("Realtime Database Başlatılamadı: " + err.message, "warn");
+                addDiagLog("Realtime Database Hatası: " + err.message, "warn");
             }
 
-            // 2. MOTOR: Firestore (Yedek Güvence)
+            // 2. MOTOR: Firestore
             try {
                 dbFirestore = getFirestore(app);
                 const fsRef = doc(dbFirestore, 'ard_veritabani', 'ana_kayitlar');
@@ -188,19 +507,16 @@
                             if (data.activeEventId) activeEventId = data.activeEventId;
                             renderTabs();
                             renderTableAndStats();
-                            updateCloudStatus('online', 'Bulut Aktif (Firestore)');
+                            updateCloudStatus('online', 'Bulut Aktif');
                         }
                     } else if (!rtdbSuccess) {
                         saveToCloud();
                     }
                 }, (error) => {
-                    addDiagLog("Firestore Yetki Uyarısı: " + error.message, "warn");
-                    if (!rtdbSuccess) {
-                        updateCloudStatus('local', 'Yetki Bekleniyor');
-                    }
+                    addDiagLog("Firestore Uyarısı: " + error.message, "warn");
                 });
             } catch (err) {
-                addDiagLog("Firestore Motor Hatası: " + err.message, "warn");
+                addDiagLog("Firestore Hatası: " + err.message, "warn");
             }
 
             loadDataLocally();
@@ -217,7 +533,6 @@
 
             let savedAnywhere = false;
 
-            // Realtime Database Yazma
             if (dbRealtime) {
                 try {
                     const rtdbRef = ref(dbRealtime, 'ard_crm_data');
@@ -229,7 +544,6 @@
                 }
             }
 
-            // Firestore Yazma
             if (dbFirestore) {
                 try {
                     const fsRef = doc(dbFirestore, 'ard_veritabani', 'ana_kayitlar');
@@ -242,7 +556,7 @@
             }
 
             if (savedAnywhere) {
-                updateCloudStatus('online', `Bulut Aktif (${activeSyncProvider || 'Çift Motor'})`);
+                updateCloudStatus('online', 'Bulut Aktif');
             } else {
                 updateCloudStatus('local', 'Yerel Mod');
             }
@@ -284,7 +598,6 @@
             const authSubtitle = document.getElementById('auth-subtitle');
             const authBtn = document.getElementById('auth-submit-btn'); 
             const form = document.getElementById('auth-form');
-            form.classList.remove('hidden');
             
             const savedCreds = localStorage.getItem('ard_auth_creds_v8');
             const isSetup = !savedCreds;
@@ -308,8 +621,6 @@
                     localStorage.setItem('ard_auth_creds_v8', btoa(u + ':' + p));
                     authBtn.disabled = true; 
                     authBtn.innerText = "Açılıyor...";
-                    document.getElementById('profile-username').innerText = u; 
-                    document.getElementById('profile-btn-name').innerText = u;
                     showToast("Sistem hazırlandı!");
                     unlockApp();
                 } else {
@@ -317,8 +628,6 @@
                     if (btoa(u + ':' + p) === expected || u === "kurtar" || p === "123456") {
                         authBtn.disabled = true; 
                         authBtn.innerText = "Açılıyor...";
-                        document.getElementById('profile-username').innerText = u; 
-                        document.getElementById('profile-btn-name').innerText = u;
                         unlockApp();
                     } else {
                         showToast("Şifre hatalı! (Acil giriş için 'kurtar' yazabilirsiniz)", "error");
@@ -329,11 +638,11 @@
 
         function unlockApp() {
             const auth = document.getElementById('auth-screen');
-            auth.classList.replace('opacity-100', 'opacity-0');
+            auth.classList.add('opacity-0');
             setTimeout(() => { 
-                auth.classList.add('hidden'); 
+                auth.style.display = 'none';
                 initApp(); 
-            }, 500);
+            }, 300);
         }
 
         window.logout = function() {
@@ -343,103 +652,25 @@
             btn.innerText = localStorage.getItem('ard_auth_creds_v8') ? "Giriş Yap" : "Sistemi Başlat";
             
             const auth = document.getElementById('auth-screen'); 
-            const main = document.getElementById('main-app');
-            main.classList.replace('opacity-100', 'opacity-0');
-            
-            setTimeout(() => { 
-                main.classList.add('hidden'); 
-                auth.classList.remove('hidden'); 
-                setTimeout(() => auth.classList.replace('opacity-0', 'opacity-100'), 50); 
-            }, 500);
+            auth.style.display = 'flex';
+            setTimeout(() => auth.classList.remove('opacity-0'), 10);
         };
 
         async function initApp() {
-            const main = document.getElementById('main-app'); 
-            main.classList.remove('hidden'); 
-            setTimeout(() => main.classList.replace('opacity-0', 'opacity-100'), 50);
             await initCloud();
         }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const colors = type === 'success' ? 'bg-slate-800 text-white dark:bg-brand-600' : 'bg-red-500 text-white';
-            toast.className = `toast-enter flex items-center px-4 py-3 rounded-xl shadow-xl text-sm font-bold ${colors}`;
+            const colors = type === 'success' ? 'bg-slate-900 text-white dark:bg-brand-600' : 'bg-rose-500 text-white';
+            toast.className = `toast-enter flex items-center px-4 py-3 rounded-2xl shadow-xl text-xs font-bold ${colors}`;
             toast.innerHTML = message;
             container.appendChild(toast);
-            setTimeout(() => { toast.classList.replace('toast-enter', 'toast-leave'); setTimeout(() => toast.remove(), 300); }, 3000);
-        }
-
-        let confirmCallback = null;
-        function customConfirm(title, message, callback) {
-            document.getElementById('confirm-title').innerText = title;
-            document.getElementById('confirm-message').innerText = message;
-            const modal = document.getElementById('confirm-modal');
-            const box = document.getElementById('confirm-box');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.classList.add('opacity-100', 'pointer-events-auto');
-            box.classList.remove('scale-95');
-            box.classList.add('scale-100');
-            confirmCallback = callback;
-        }
-
-        window.closeConfirm = function() {
-            const modal = document.getElementById('confirm-modal');
-            const box = document.getElementById('confirm-box');
-            modal.classList.remove('opacity-100', 'pointer-events-auto');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            box.classList.remove('scale-100');
-            box.classList.add('scale-95');
-            confirmCallback = null;
-        };
-        
-        document.getElementById('confirm-cancel').onclick = closeConfirm;
-        document.getElementById('confirm-ok').onclick = () => { if(confirmCallback) confirmCallback(); closeConfirm(); };
-
-        const bgThemes = { 
-            'standart': 'bg-slate-100 dark:bg-slate-900', 
-            'dernek': 'bg-slate-100 dark:bg-slate-900', 
-            'mavi': 'bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-blue-900/30' 
-        };
-
-        window.setBgTheme = function(themeKey) {
-            const body = document.getElementById('app-body');
-            Object.values(bgThemes).forEach(cls => cls.split(' ').forEach(c => { if(c) body.classList.remove(c) }));
-            const existingWatermark = document.getElementById('theme-watermark');
-            if(existingWatermark) existingWatermark.remove();
-            
-            if(bgThemes[themeKey]) { bgThemes[themeKey].split(' ').forEach(c => { if(c) body.classList.add(c) }); }
-            
-            if(themeKey === 'dernek') {
-                const watermark = document.createElement('div'); 
-                watermark.id = 'theme-watermark';
-                watermark.className = 'fixed inset-0 pointer-events-none flex items-center justify-center z-[-1] opacity-[0.08] dark:opacity-[0.15] overflow-hidden';
-                watermark.innerHTML = `<svg class="w-[80vw] h-[80vh] min-w-[500px]" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M250 50 L120 400 L200 400 L230 310 L350 310 L380 400 L460 400 L320 50 Z M250 160 L245 230 L320 230 Z" fill="#0f766e"/><path d="M 320 230 C 420 220 440 280 380 340 C 330 390 220 380 220 380 C 220 380 340 370 330 270 Z" fill="#14b8a6"/></svg>`;
-                document.body.appendChild(watermark);
-            }
-            localStorage.setItem('ard_theme', themeKey);
-        };
-
-        function initTheme() {
-            const toggleBtn = document.getElementById('theme-toggle'); 
-            const themeIcon = document.getElementById('theme-icon');
-            if (localStorage.getItem('ard_darkMode') === 'true' || (!('ard_darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark'); 
-                themeIcon.textContent = '☀';
-            } else { 
-                document.documentElement.classList.remove('dark'); 
-                themeIcon.textContent = '🌙'; 
-            }
-            
-            const savedBg = localStorage.getItem('ard_theme') || 'dernek'; 
-            setBgTheme(savedBg);
-            
-            toggleBtn.addEventListener('click', () => {
-                document.documentElement.classList.toggle('dark');
-                const isDark = document.documentElement.classList.contains('dark');
-                localStorage.setItem('ard_darkMode', isDark); 
-                themeIcon.textContent = isDark ? '☀️' : '🌙';
-            });
+            setTimeout(() => { 
+                toast.classList.replace('toast-enter', 'toast-leave'); 
+                setTimeout(() => toast.remove(), 250); 
+            }, 3000);
         }
 
         function renderTabs() {
@@ -449,17 +680,17 @@
             events.forEach(ev => {
                 const isActive = ev.id === activeEventId; 
                 const tab = document.createElement('div');
-                tab.className = `group flex items-center justify-between px-3 py-3 rounded-xl cursor-pointer text-sm font-bold transition-all border ${isActive ? 'bg-brand-500 border-brand-500 text-white shadow-md' : 'bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'}`;
+                tab.className = `group flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer text-xs font-bold transition-all border ${isActive ? 'bg-brand-500 border-brand-500 text-white shadow-md shadow-brand-500/20' : 'bg-white dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'}`;
                 
                 const icon = ev.isGeneral 
-                    ? '<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>' 
-                    : '<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>';
+                    ? '<svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>' 
+                    : '<svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>';
                 
                 let delBtn = ev.isGeneral 
-                    ? '<div class="w-6"></div>' 
-                    : `<button class="opacity-100 lg:opacity-0 group-hover:opacity-100 ${isActive ? 'text-brand-200 hover:text-white hover:bg-brand-600' : 'text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30'} p-1.5 rounded-lg transition-all" onclick="deleteEvent('${ev.id}', event)" title="Sil"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>`;
+                    ? '' 
+                    : `<button class="p-1 rounded-lg ${isActive ? 'text-brand-200 hover:text-white' : 'text-slate-400 hover:text-rose-500'}" onclick="deleteEvent('${ev.id}', event)" title="Sil"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>`;
                 
-                tab.innerHTML = `<div class="flex items-center gap-3 overflow-hidden"><span class="flex-shrink-0 opacity-80">${icon}</span> <span class="truncate">${ev.name}</span></div> ${delBtn}`; 
+                tab.innerHTML = `<div class="flex items-center gap-2.5 overflow-hidden"><span class="flex-shrink-0 opacity-80">${icon}</span> <span class="truncate">${ev.name}</span></div> ${delBtn}`; 
                 tab.onclick = () => switchTab(ev.id); 
                 container.appendChild(tab);
             });
@@ -489,7 +720,7 @@
         }
 
         function createProgressHTML(label, count, percentage, barColor) {
-            return `<div class="mb-3 last:mb-0"><div class="flex justify-between text-xs mb-1"><span class="font-medium text-slate-600 dark:text-slate-300 capitalize truncate pr-2">${label}</span><span class="text-slate-400 font-medium">${count} <span class="text-slate-800 dark:text-slate-100 font-bold ml-1">%${percentage}</span></span></div><div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full rounded-full ${barColor}" style="width: ${percentage}%"></div></div></div>`;
+            return `<div class="mb-2.5 last:mb-0"><div class="flex justify-between text-[11px] mb-1"><span class="font-semibold text-slate-600 dark:text-slate-300 capitalize truncate pr-2">${label}</span><span class="text-slate-400 font-medium">${count} <span class="text-slate-800 dark:text-slate-100 font-bold ml-1">%${percentage}</span></span></div><div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"><div class="h-full rounded-full ${barColor}" style="width: ${percentage}%"></div></div></div>`;
         }
 
         function renderTableAndStats() {
@@ -516,23 +747,27 @@
                 emptyState.classList.remove('flex');
                 currentData.forEach(p => {
                     const evName = events.find(e => e.id === p.eventId)?.name || 'Bilinmeyen';
-                    const phoneStr = p.phone ? `<div class="text-xs text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap">📞 ${p.phone}</div>` : '';
-                    const emailStr = p.email ? `<div class="text-xs text-slate-500 dark:text-slate-400 font-medium truncate max-w-[120px]" title="${p.email}">📧 ${p.email}</div>` : '';
-                    const contactStr = (phoneStr || emailStr) ? `<div class="flex flex-col gap-0.5">${phoneStr}${emailStr}</div>` : '<span class="text-slate-300 dark:text-slate-600">-</span>';
+                    const phoneStr = p.phone ? `<div class="text-[11px] text-slate-500 font-medium whitespace-nowrap">📞 ${p.phone}</div>` : '';
+                    const emailStr = p.email ? `<div class="text-[11px] text-slate-400 font-medium truncate max-w-[120px]" title="${p.email}">📧 ${p.email}</div>` : '';
+                    const contactStr = (phoneStr || emailStr) ? `<div class="flex flex-col gap-0.5">${phoneStr}${emailStr}</div>` : '<span class="text-slate-300">-</span>';
                     const row = document.createElement('tr'); 
-                    row.className = 'hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors group';
+                    row.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group';
                     const genderStyles = p.gender === 'Kız' ? 'bg-pink-50 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400 border-pink-100 dark:border-pink-500/20' : 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 border-blue-100 dark:border-blue-500/20';
                     row.innerHTML = `
-                        <td class="px-4 py-2.5 font-bold text-slate-700 dark:text-slate-200 capitalize">${p.name}</td>
-                        <td class="px-4 py-2.5"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${genderStyles}">${p.gender}</span></td>
-                        <td class="px-4 py-2.5 capitalize text-slate-600 dark:text-slate-300 font-medium">${p.faculty}</td>
-                        <td class="px-4 py-2.5 capitalize text-slate-500 dark:text-slate-400">${p.department}</td>
-                        <td class="px-4 py-2.5">${contactStr}</td>
-                        <td class="px-4 py-2.5"><span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-500 dark:text-slate-400">${evName}</span></td>
-                        <td class="px-4 py-2.5 text-right opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
+                        <td class="px-4 py-3 font-bold text-slate-700 dark:text-slate-200 capitalize">${p.name}</td>
+                        <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${genderStyles}">${p.gender}</span></td>
+                        <td class="px-4 py-3 capitalize text-slate-600 dark:text-slate-300 font-medium">${p.faculty}</td>
+                        <td class="px-4 py-3 capitalize text-slate-500 dark:text-slate-400">${p.department}</td>
+                        <td class="px-4 py-3">${contactStr}</td>
+                        <td class="px-4 py-3"><span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-[10px] font-bold text-slate-500 dark:text-slate-400">${evName}</span></td>
+                        <td class="px-4 py-3 text-right">
                             <div class="flex justify-end gap-1">
-                                <button onclick="startEdit('${p.id}')" class="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg cursor-pointer" title="Düzenle"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
-                                <button onclick="deleteParticipant('${p.id}')" class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg cursor-pointer" title="Sil"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                                <button onclick="startEdit('${p.id}')" class="p-1.5 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg cursor-pointer" title="Düzenle">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                </button>
+                                <button onclick="deleteParticipant('${p.id}')" class="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 rounded-lg cursor-pointer" title="Sil">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
                             </div>
                         </td>`;
                     tbody.appendChild(row);
@@ -628,12 +863,12 @@
             });
             const common = Object.values(map).filter(x => x.evs.size > 1).sort((a,b) => b.evs.size - a.evs.size);
             if(common.length === 0) { 
-                list.innerHTML = '<p class="text-xs text-slate-400 py-4 text-center">Birden fazla etkinliğe katılan kişi yok.</p>'; 
+                list.innerHTML = '<p class="text-xs text-slate-400 py-3 text-center font-medium">Birden fazla etkinliğe katılan kişi yok.</p>'; 
                 return; 
             }
             common.forEach(c => {
                 const evNames = Array.from(c.evs).map(id => { const e = events.find(x => x.id === id); return e ? e.name : 'Bilinmeyen'; });
-                list.innerHTML += `<div class="p-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30"><div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-[10px]">${c.gen==='Kız'?'👩':'👨'}</span><span class="font-bold text-sm text-slate-700 dark:text-slate-200 capitalize">${c.name}</span></div><span class="bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 text-[10px] font-bold px-2 py-0.5 rounded border border-indigo-100 dark:border-indigo-500/20">${c.evs.size} Etkinlik</span></div><div class="flex flex-wrap gap-1">${evNames.map(n=>`<span class="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 shadow-sm">${n}</span>`).join('')}</div></div>`;
+                list.innerHTML += `<div class="p-3 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30"><div class="flex items-center justify-between mb-1.5"><div class="flex items-center gap-2"><span class="w-5 h-5 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-[10px]">${c.gen==='Kız'?'👩':'👨'}</span><span class="font-bold text-xs text-slate-700 dark:text-slate-200 capitalize">${c.name}</span></div><span class="bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 text-[10px] font-bold px-2 py-0.5 rounded border border-indigo-100 dark:border-indigo-500/20">${c.evs.size} Etkinlik</span></div><div class="flex flex-wrap gap-1">${evNames.map(n=>`<span class="bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 shadow-sm">${n}</span>`).join('')}</div></div>`;
             });
         }
 
@@ -653,7 +888,31 @@
                 showToast(`"${val}" eklendi.`); 
             }
         };
-        
+
+        let confirmCallback = null;
+        function customConfirm(title, message, callback) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            modal.style.display = 'flex';
+            modal.classList.remove('modal-hidden');
+            setTimeout(() => box.classList.replace('scale-95', 'scale-100'), 10);
+            confirmCallback = callback;
+        }
+
+        window.closeConfirm = function() {
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            box.classList.replace('scale-100', 'scale-95');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.classList.add('modal-hidden');
+            }, 150);
+            confirmCallback = null;
+        };
+        document.getElementById('confirm-ok').onclick = () => { if(confirmCallback) confirmCallback(); closeConfirm(); };
+
         window.deleteEvent = (id, e) => {
             e.stopPropagation(); 
             customConfirm("Etkinliği Sil", "Bu etkinliği ve içindeki kayıtları silmek istiyor musunuz?", () => { 
@@ -725,7 +984,8 @@
             document.getElementById('form-title').innerText = 'Yeni Kayıt Ekle'; 
         };
         document.getElementById('cancel-edit-btn').onclick = window.cancelEdit;
-        
+
+        // Auto-complete feature
         document.getElementById('name').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase().trim(); 
             const list = document.getElementById('autocomplete-list');
@@ -734,7 +994,7 @@
             participants.filter(p => p.name.toLowerCase().includes(val)).forEach(p => unique[p.name.toLowerCase()] = p);
             const matches = Object.values(unique); 
             if(matches.length === 0) { list.classList.add('hidden'); return; }
-            list.innerHTML = matches.map(m => `<div class="px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition-colors" onclick="selectAutocomplete('${m.id}')"><div class="font-bold capitalize text-sm text-slate-700 dark:text-slate-200">${m.name}</div><div class="text-[10px] text-slate-400 font-medium">${m.faculty} • ${m.department}</div></div>`).join('');
+            list.innerHTML = matches.map(m => `<div class="px-3.5 py-2 hover:bg-slate-100 dark:hover:bg-slate-700/50 cursor-pointer transition-colors" onclick="selectAutocomplete('${m.id}')"><div class="font-bold capitalize text-xs text-slate-700 dark:text-slate-200">${m.name}</div><div class="text-[10px] text-slate-400 font-medium">${m.faculty} • ${m.department}</div></div>`).join('');
             list.classList.remove('hidden');
         });
         
@@ -750,7 +1010,7 @@
             }
             document.getElementById('autocomplete-list').classList.add('hidden');
         };
-        
+
         window.exportToCSV = () => {
             const curr = activeEventId === 'general' ? participants : participants.filter(p => p.eventId === activeEventId);
             if(curr.length === 0) return showToast("Dışa aktarılacak veri yok!", "error");
@@ -807,6 +1067,26 @@
             };
             reader.readAsText(file);
         };
+
+        // Theme Toggle Setup
+        function initTheme() {
+            const toggleBtn = document.getElementById('theme-toggle'); 
+            const themeIcon = document.getElementById('theme-icon');
+            if (localStorage.getItem('ard_darkMode') === 'true' || (!('ard_darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark'); 
+                themeIcon.textContent = '☀️';
+            } else { 
+                document.documentElement.classList.remove('dark'); 
+                themeIcon.textContent = '🌙'; 
+            }
+            
+            toggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('ard_darkMode', isDark); 
+                themeIcon.textContent = isDark ? '☀️' : '🌙';
+            });
+        }
 
         window.addEventListener('DOMContentLoaded', () => { 
             initTheme(); 
