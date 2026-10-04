@@ -413,9 +413,8 @@
                 
                 isFirebaseReady = true;
 
-                // Verilerin tutulacağı klasör/dosya yolu
-                // Firestore kurallarını "allow read, write: if true;" yaptığınız için bu yola herkes erişebilir.
-                docRef = doc(db, 'artifacts', 'ard-crm', 'public', 'data', 'crm_state');
+                // HATANIN DÜZELTİLDİĞİ YER: Dizin yolu 2 kelime olmalı (Klasör ve Dosya).
+                docRef = doc(db, 'ard_veritabani', 'ana_kayitlar');
                 
                 onSnapshot(docRef, (snapshot) => {
                     if (snapshot.exists()) {
