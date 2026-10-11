@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARDER - Yönetim & Analiz Paneli</title>
+    <title>ARDER - Yönetim & Katılımcı Analiz Paneli</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiiciIHI9IjE0IiBmaWxsPSIjMTBiOTgxIi8+PHBhdGggZD0iTTkgMTdsNSA1IDktOSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -27,13 +27,13 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen">
 
-    <!-- GİRİŞ EKRANI -->
+    <!-- GİRİŞ EKRANI (FIREBASE AUTH) -->
     <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-md border border-slate-200 dark:border-slate-700">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-brand-500 text-white rounded-2xl mx-auto flex items-center justify-center text-2xl font-bold mb-3 shadow-lg shadow-brand-500/30">AR</div>
                 <h2 class="text-2xl font-bold tracking-tight">Yönetim Paneli</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Yetkili e-posta ve şifrenizle giriş yapın</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Akademik Renkler Derneği CRM Sistemi</p>
             </div>
             <form id="auth-form" onsubmit="return false;" class="space-y-4">
                 <div>
@@ -53,82 +53,147 @@
     <!-- ANA PANEL -->
     <div id="main-app" class="opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col min-h-screen">
         <!-- Üst Bar -->
-        <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30">
+        <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-brand-500 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-md">AR</div>
                     <div>
                         <h1 class="text-base sm:text-lg font-bold leading-tight">Akademik Renkler Derneği</h1>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Yönetim & Katılımcı Analizi</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Kurumsal Yönetim & Katılımcı Analizi</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <span id="sync-badge" class="px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 flex items-center gap-1.5">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Bulut Aktif
                     </span>
-                    <button onclick="logout()" class="p-2 text-slate-500 hover:text-red-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition" title="Çıkış Yap">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    </button>
+
+                    <!-- Veri İşlemleri Açılır Menü -->
+                    <div class="relative inline-block text-left">
+                        <button onclick="toggleDataMenu()" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-xs font-bold rounded-xl flex items-center gap-1.5 transition">
+                            📊 Veri İşlemleri
+                        </button>
+                        <div id="data-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-1.5 z-40 text-xs">
+                            <button onclick="exportJSON()" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">💾 JSON Yedeği İndir</button>
+                            <label class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 cursor-pointer">
+                                📂 JSON Yedeği Yükle
+                                <input type="file" id="import-file" accept=".json" onchange="importJSON(event)" class="hidden">
+                            </label>
+                            <button onclick="exportCSV()" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2 border-t border-slate-100 dark:border-slate-700">📄 Excel (CSV) İndir</button>
+                            <button onclick="logout()" class="w-full text-left px-3 py-2 hover:bg-red-50 text-red-600 dark:hover:bg-red-900/20 flex items-center gap-2 border-t border-slate-100 dark:border-slate-700 font-bold">🔒 Çıkış Yap</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
 
         <!-- İçerik -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- Sol Panel: Etkinlikler -->
-            <div class="lg:col-span-1 space-y-4">
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <div class="flex items-center justify-between mb-3">
-                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500">Etkinlikler</h2>
-                        <button onclick="openNewEventModal()" class="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1">+ Yeni Ekle</button>
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full space-y-6">
+            
+            <!-- İSTATİSTİK KARTLARI (TÜM ORİJİNAL İSTATİSTİKLER + DUYURU KAYNAĞI) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- 1. Toplam Katılımcı -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 flex items-center justify-center font-bold text-xl">👥</div>
+                    <div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Toplam Katılımcı</div>
+                        <div id="stat-total-participants" class="text-2xl font-black text-slate-800 dark:text-white">0</div>
                     </div>
-                    <div id="tabs-container" class="space-y-1.5"></div>
                 </div>
 
-                <!-- Kaynak Dağılım Kartı -->
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Duyuru / Kaynak Dağılımı</h3>
-                    <div id="source-stats" class="space-y-2 text-xs"></div>
+                <!-- 2. Etkinlik Sayısı -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 flex items-center justify-center font-bold text-xl">📅</div>
+                    <div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Aktif Etkinlik</div>
+                        <div id="stat-total-events" class="text-2xl font-black text-slate-800 dark:text-white">0</div>
+                    </div>
+                </div>
+
+                <!-- 3. Farklı Bölüm / Meslek -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 flex items-center justify-center font-bold text-xl">🎓</div>
+                    <div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Farklı Bölüm</div>
+                        <div id="stat-total-depts" class="text-2xl font-black text-slate-800 dark:text-white">0</div>
+                    </div>
+                </div>
+
+                <!-- 4. En Popüler Kaynak (YENİ) -->
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 flex items-center justify-center font-bold text-xl">📢</div>
+                    <div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lider Duyuru Kanalı</div>
+                        <div id="stat-top-source" class="text-sm font-black text-slate-800 dark:text-white truncate max-w-[140px]">-</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Sağ Panel: Liste & Filtreler -->
-            <div class="lg:col-span-3 space-y-4">
-                <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                    <div class="relative flex-1">
-                        <input type="text" id="search-input" oninput="renderTable()" placeholder="İsim, bölüm veya telefon ara..." class="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                        <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <!-- ALT DÜZEN: SOL MENÜ / SAĞ LİSTE VE DETAYLI İSTATİSTİKLER -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Sol Panel: Etkinlikler & Analiz Kutuları -->
+                <div class="lg:col-span-1 space-y-4">
+                    <!-- Etkinlikler Listesi -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex items-center justify-between mb-3">
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Etkinlikler</h2>
+                            <button onclick="openNewEventModal()" class="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1">+ Yeni Ekle</button>
+                        </div>
+                        <div id="tabs-container" class="space-y-1.5"></div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <select id="source-filter" onchange="renderTable()" class="text-xs py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 font-medium">
-                            <option value="">Tüm Kaynaklar</option>
-                            <option value="Instagram">Instagram</option>
-                            <option value="WhatsApp Grupları">WhatsApp Grupları</option>
-                            <option value="Afiş / Stant">Afiş / Stant</option>
-                            <option value="Arkadaş Tavsiyesi">Arkadaş Tavsiyesi</option>
-                            <option value="Diğer">Diğer</option>
-                        </select>
-                        <button onclick="openParticipantModal()" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-sm font-bold shadow-md shadow-brand-500/20 transition flex items-center gap-1.5">
-                            + Katılımcı Ekle
-                        </button>
+
+                    <!-- Bölüm / Meslek Dağılımı (ESKİ İSTATİSTİK) -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">🎓 Bölüm Dağılımı (İlk 5)</h3>
+                        <div id="dept-stats-container" class="space-y-2 text-xs"></div>
+                    </div>
+
+                    <!-- Duyuru / Kaynak Dağılımı (YENİ İSTATİSTİK) -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">📢 Duyuru / Kaynak Dağılımı</h3>
+                        <div id="source-stats-container" class="space-y-2 text-xs"></div>
                     </div>
                 </div>
 
-                <!-- Tablo -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-200 dark:border-slate-700">
-                                <tr>
-                                    <th class="px-4 py-3">Ad Soyad</th>
-                                    <th class="px-4 py-3">Bölüm</th>
-                                    <th class="px-4 py-3">İletişim</th>
-                                    <th class="px-4 py-3">Nereden Duydu?</th>
-                                    <th class="px-4 py-3 text-right">İşlem</th>
-                                </tr>
-                            </thead>
-                            <tbody id="participant-tbody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
-                        </table>
+                <!-- Sağ Panel: Arama, Filtre ve Katılımcı Tablosu -->
+                <div class="lg:col-span-3 space-y-4">
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                        <div class="relative flex-1">
+                            <input type="text" id="search-input" oninput="renderTable()" placeholder="İsim, bölüm veya telefon ara..." class="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <!-- Kaynak Filtresi -->
+                            <select id="source-filter" onchange="renderTable()" class="text-xs py-2 px-3 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 font-medium">
+                                <option value="">Tüm Kaynaklar</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="WhatsApp Grupları">WhatsApp Grupları</option>
+                                <option value="Afiş / Stant">Afiş / Stant</option>
+                                <option value="Arkadaş Tavsiyesi">Arkadaş Tavsiyesi</option>
+                                <option value="Diğer">Diğer</option>
+                                <option value="Belirtilmedi">Belirtilmedi</option>
+                            </select>
+                            <button onclick="openParticipantModal()" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-sm font-bold shadow-md shadow-brand-500/20 transition flex items-center gap-1.5 whitespace-nowrap">
+                                + Katılımcı Ekle
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Katılımcı Tablosu -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-200 dark:border-slate-700">
+                                    <tr>
+                                        <th class="px-4 py-3">Ad Soyad</th>
+                                        <th class="px-4 py-3">Bölüm / Meslek</th>
+                                        <th class="px-4 py-3">İletişim</th>
+                                        <th class="px-4 py-3">Nereden Duydu?</th>
+                                        <th class="px-4 py-3 text-right">İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="participant-tbody" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,24 +208,25 @@
                 <input type="hidden" id="part-id">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Ad Soyad *</label>
-                    <input type="text" id="part-name" required class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-600 dark:bg-slate-700">
+                    <input type="text" id="part-name" required class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-600 dark:bg-slate-700 focus:ring-2 focus:ring-brand-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Bölüm / Meslek</label>
-                    <input type="text" id="part-dept" class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-600 dark:bg-slate-700">
+                    <input type="text" id="part-dept" class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-600 dark:bg-slate-700 focus:ring-2 focus:ring-brand-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Telefon</label>
-                    <input type="tel" id="part-phone" class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-600 dark:bg-slate-700" placeholder="05XXXXXXXXX">
+                    <input type="tel" id="part-phone" class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-600 dark:bg-slate-700 focus:ring-2 focus:ring-brand-500" placeholder="05XXXXXXXXX">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 mb-1">Etkinliği Nereden Duydu?</label>
-                    <select id="part-source" class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-600 dark:bg-slate-700">
+                    <select id="part-source" class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-600 dark:bg-slate-700 focus:ring-2 focus:ring-brand-500">
                         <option value="Instagram">Instagram</option>
                         <option value="WhatsApp Grupları">WhatsApp Grupları</option>
                         <option value="Afiş / Stant">Afiş / Stant</option>
                         <option value="Arkadaş Tavsiyesi">Arkadaş Tavsiyesi</option>
                         <option value="Diğer">Diğer</option>
+                        <option value="Belirtilmedi">Belirtilmedi</option>
                     </select>
                 </div>
                 <div class="flex justify-end gap-2 pt-3">
@@ -184,7 +250,7 @@
         </div>
     </div>
 
-    <!-- FIREBASE & JS -->
+    <!-- FIREBASE & JAVASCRIPT MOTORU -->
     <script type="module">
         import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -208,7 +274,7 @@
         let participants = [];
         let activeEventId = 'all';
 
-        // Kimlik Denetimi
+        // Giriş Kontrolü
         onAuthStateChanged(auth, user => {
             const authScreen = document.getElementById('auth-screen');
             const mainApp = document.getElementById('main-app');
@@ -222,7 +288,6 @@
             }
         });
 
-        // Giriş Yap Butonu
         document.getElementById('auth-submit-btn').onclick = async () => {
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-password').value;
@@ -238,17 +303,25 @@
 
         window.logout = () => signOut(auth);
 
-        // Veri Senkronizasyonu
+        // Veri Menüsü
+        window.toggleDataMenu = () => {
+            document.getElementById('data-dropdown').classList.toggle('hidden');
+        };
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#data-dropdown') && !e.target.closest('button[onclick="toggleDataMenu()"]')) {
+                document.getElementById('data-dropdown')?.classList.add('hidden');
+            }
+        });
+
+        // Senkronizasyon
         function startSync() {
             const dataRef = ref(db, 'ard_crm_data');
             onValue(dataRef, snapshot => {
                 const val = snapshot.val();
                 if (val) {
-                    if (val.events) events = val.events;
-                    if (val.participants) participants = val.participants;
-                    renderTabs();
-                    renderTable();
-                    renderSourceStats();
+                    if (val.events && Array.isArray(val.events)) events = val.events;
+                    if (val.participants && Array.isArray(val.participants)) participants = val.participants;
+                    refreshAllUI();
                 }
             });
         }
@@ -257,8 +330,14 @@
             try {
                 await set(ref(db, 'ard_crm_data'), { events, participants });
             } catch (e) {
-                console.error("Kayıt hatası:", e);
+                console.error("Buluta kayıt hatası:", e);
             }
+        }
+
+        function refreshAllUI() {
+            renderTabs();
+            renderTable();
+            renderAllStats();
         }
 
         // Sekmeler
@@ -284,9 +363,7 @@
                 tab.onclick = (e) => {
                     if (e.target.closest('button')) return;
                     activeEventId = ev.id;
-                    renderTabs();
-                    renderTable();
-                    renderSourceStats();
+                    refreshAllUI();
                 };
                 container.appendChild(tab);
             });
@@ -304,7 +381,8 @@
                 const matchesSearch = (p.name || '').toLowerCase().includes(search) || 
                                       (p.department || '').toLowerCase().includes(search) || 
                                       (p.phone || '').includes(search);
-                const matchesSource = !sourceFilter || p.source === sourceFilter;
+                const currentSource = p.source || 'Belirtilmedi';
+                const matchesSource = !sourceFilter || currentSource === sourceFilter;
                 return matchesEvent && matchesSearch && matchesSource;
             });
 
@@ -313,13 +391,15 @@
                 'WhatsApp Grupları': 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
                 'Afiş / Stant': 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
                 'Arkadaş Tavsiyesi': 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-                'Diğer': 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'
+                'Diğer': 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
+                'Belirtilmedi': 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'
             };
 
             filtered.forEach(p => {
                 const tr = document.createElement('tr');
-                const badgeColor = sourceColors[p.source] || sourceColors['Diğer'];
-                const sourceBadge = `<span class="px-2 py-0.5 rounded-md text-[11px] font-semibold ${badgeColor}">${p.source || 'Belirtilmedi'}</span>`;
+                const pSource = p.source || 'Belirtilmedi';
+                const badgeColor = sourceColors[pSource] || sourceColors['Belirtilmedi'];
+                const sourceBadge = `<span class="px-2 py-0.5 rounded-md text-[11px] font-semibold ${badgeColor}">${pSource}</span>`;
 
                 tr.innerHTML = `
                     <td class="px-4 py-3 font-semibold">${p.name}</td>
@@ -337,42 +417,82 @@
             });
         };
 
-        // Kaynak Analiz İstatistikleri
-        window.renderSourceStats = () => {
-            const statBox = document.getElementById('source-stats');
+        // TÜM İSTATİSTİKLERİ ÇALIŞTIRMA (ÖZET KARTLAR + BÖLÜM ANALİZİ + DUYURU ANALİZİ)
+        function renderAllStats() {
             const targetParts = participants.filter(p => activeEventId === 'all' || p.eventId === activeEventId);
             const total = targetParts.length;
 
-            if (total === 0) {
-                statBox.innerHTML = '<span class="text-slate-400 italic">Veri bulunamadı</span>';
-                return;
-            }
+            // 1. Üst Özet Kartlar
+            document.getElementById('stat-total-participants').textContent = total;
+            document.getElementById('stat-total-events').textContent = events.filter(e => !e.isGeneral).length;
 
-            const counts = {};
+            // Bölüm Sayımı
+            const depts = new Set();
+            const deptCounts = {};
+            // Kaynak Sayımı
+            const sourceCounts = {};
+
             targetParts.forEach(p => {
+                if (p.department && p.department.trim()) {
+                    const d = p.department.trim();
+                    depts.add(d);
+                    deptCounts[d] = (deptCounts[d] || 0) + 1;
+                }
                 const src = p.source || 'Belirtilmedi';
-                counts[src] = (counts[src] || 0) + 1;
+                sourceCounts[src] = (sourceCounts[src] || 0) + 1;
             });
 
-            statBox.innerHTML = Object.entries(counts)
-                .sort((a, b) => b[1] - a[1])
-                .map(([src, count]) => {
-                    const percent = Math.round((count / total) * 100);
+            document.getElementById('stat-total-depts').textContent = depts.size;
+
+            // Lider Kaynak
+            const sortedSources = Object.entries(sourceCounts).sort((a, b) => b[1] - a[1]);
+            document.getElementById('stat-top-source').textContent = sortedSources[0] ? `${sortedSources[0][0]} (${sortedSources[0][1]})` : '-';
+
+            // 2. Bölüm Dağılım Listesi
+            const deptBox = document.getElementById('dept-stats-container');
+            const sortedDepts = Object.entries(deptCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            if (sortedDepts.length === 0) {
+                deptBox.innerHTML = '<span class="text-slate-400 italic">Bölüm verisi yok</span>';
+            } else {
+                deptBox.innerHTML = sortedDepts.map(([d, cnt]) => {
+                    const pct = Math.round((cnt / total) * 100);
                     return `
                         <div>
                             <div class="flex justify-between mb-0.5">
-                                <span class="font-medium text-slate-600 dark:text-slate-300">${src}</span>
-                                <span class="font-bold">${count} (%${percent})</span>
+                                <span class="font-medium text-slate-600 dark:text-slate-300 truncate max-w-[120px]">${d}</span>
+                                <span class="font-bold">${cnt} (%${pct})</span>
                             </div>
                             <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
-                                <div class="bg-brand-500 h-full rounded-full" style="width: ${percent}%"></div>
+                                <div class="bg-indigo-500 h-full rounded-full" style="width: ${pct}%"></div>
                             </div>
                         </div>
                     `;
                 }).join('');
-        };
+            }
 
-        // Katılımcı Kaydet
+            // 3. Duyuru / Kaynak Dağılım Listesi
+            const sourceBox = document.getElementById('source-stats-container');
+            if (sortedSources.length === 0) {
+                sourceBox.innerHTML = '<span class="text-slate-400 italic">Veri bulunamadı</span>';
+            } else {
+                sourceBox.innerHTML = sortedSources.map(([src, cnt]) => {
+                    const pct = Math.round((cnt / total) * 100);
+                    return `
+                        <div>
+                            <div class="flex justify-between mb-0.5">
+                                <span class="font-medium text-slate-600 dark:text-slate-300">${src}</span>
+                                <span class="font-bold">${cnt} (%${pct})</span>
+                            </div>
+                            <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-brand-500 h-full rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Katılımcı Ekle/Düzenle
         window.saveParticipant = async (e) => {
             e.preventDefault();
             const id = document.getElementById('part-id').value;
@@ -401,13 +521,13 @@
             }
             await saveAllData();
             closeParticipantModal();
-            renderTable();
-            renderSourceStats();
+            refreshAllUI();
         };
 
         window.openParticipantModal = () => {
             document.getElementById('participant-form').reset();
             document.getElementById('part-id').value = '';
+            document.getElementById('part-source').value = 'Instagram';
             document.getElementById('participant-modal-title').textContent = 'Yeni Katılımcı Ekle';
             document.getElementById('participant-modal').classList.remove('hidden');
         };
@@ -423,7 +543,7 @@
             document.getElementById('part-name').value = p.name;
             document.getElementById('part-dept').value = p.department || '';
             document.getElementById('part-phone').value = p.phone || '';
-            document.getElementById('part-source').value = p.source || 'Instagram';
+            document.getElementById('part-source').value = p.source || 'Belirtilmedi';
             document.getElementById('participant-modal-title').textContent = 'Katılımcıyı Düzenle';
             document.getElementById('participant-modal').classList.remove('hidden');
         };
@@ -432,17 +552,16 @@
             if (!confirm("Katılımcıyı silmek istediğinize emin misiniz?")) return;
             participants = participants.filter(x => x.id !== id);
             await saveAllData();
-            renderTable();
-            renderSourceStats();
+            refreshAllUI();
         };
 
-        // Etkinlik İşlemleri
+        // Etkinlik Yönetimi
         window.openNewEventModal = async () => {
             const name = prompt("Yeni Etkinlik Adı:");
             if (!name) return;
             events.push({ id: 'ev_' + Date.now(), name, isGeneral: false });
             await saveAllData();
-            renderTabs();
+            refreshAllUI();
         };
 
         window.openEditEvent = (id, currentName, e) => {
@@ -460,7 +579,7 @@
             if (ev) ev.name = newName;
             await saveAllData();
             document.getElementById('edit-event-modal').classList.add('hidden');
-            renderTabs();
+            refreshAllUI();
         };
 
         window.deleteEvent = async (id, e) => {
@@ -470,9 +589,50 @@
             participants = participants.filter(x => x.eventId !== id);
             if (activeEventId === id) activeEventId = 'all';
             await saveAllData();
-            renderTabs();
-            renderTable();
-            renderSourceStats();
+            refreshAllUI();
+        };
+
+        // YEDEKLEME VE DIŞA AKTARMA (JSON / CSV EXCEL)
+        window.exportJSON = () => {
+            const blob = new Blob([JSON.stringify({ events, participants }, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ARD_CRM_Yedek_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+        };
+
+        window.importJSON = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    if (data.events) events = data.events;
+                    if (data.participants) participants = data.participants;
+                    await saveAllData();
+                    refreshAllUI();
+                    alert("Yedek başarıyla yüklendi!");
+                } catch (err) {
+                    alert("Hatalı JSON dosyası!");
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        window.exportCSV = () => {
+            const targetParts = participants.filter(p => activeEventId === 'all' || p.eventId === activeEventId);
+            let csv = "\uFEFFAd Soyad,Bölüm,Telefon,Duyuru Kaynağı\n";
+            targetParts.forEach(p => {
+                csv += `"${p.name || ''}","${p.department || ''}","${p.phone || ''}","${p.source || 'Belirtilmedi'}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Katilimci_Listesi_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
         };
     </script>
 </body>
